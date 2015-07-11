@@ -1,11 +1,12 @@
 FROM ubuntu:trusty
 
-MAINTAINER Denis Gladkikh <splunk@denis.gladkikh.email>
+MAINTAINER Denis Gladkikh <docker-splunk@denis.gladkikh.email>
 
-ENV SPLUNK_PRODUCT splunk
+ENV SPLUNK_PRODUCT splunk_light
 ENV SPLUNK_VERSION 6.2.4
 ENV SPLUNK_BUILD 271043
-ENV SPLUNK_MD5SUM b54ac1550841588d152eb12514ecfb2c
+ENV SPLUNK_MD5SUM 070b961f563537ba2260e04703a966a3
+ENV SPLUNK_FILENAME splunklight-${SPLUNK_VERSION}-${SPLUNK_BUILD}-Linux-x86_64.tgz
 
 ENV SPLUNK_HOME /opt/splunk
 ENV SPLUNK_GROUP splunk
@@ -26,10 +27,12 @@ ENV LANG en_US.utf8
 RUN apt-get update \
     && apt-get install -y wget \
     && mkdir -p ${SPLUNK_HOME} \
-    && wget -qO /tmp/splunk.tgz http://www.splunk.com/bin/splunk/DownloadActivityServlet\?architecture\=x86_64\&platform\=Linux\&version\=${SPLUNK_VERSION}\&product\=${SPLUNK_PRODUCT}\&filename\=${SPLUNK_PRODUCT}-${SPLUNK_VERSION}-${SPLUNK_BUILD}-Linux-x86_64.tgz\&wget\=true \
-    && (cd /tmp && echo "${SPLUNK_MD5SUM} splunk.tgz" >> /tmp/splunk.tgz.md5 && md5sum -c splunk.tgz.md5) \
-    && tar xzf /tmp/splunk.tgz --strip 1 -C $SPLUNK_HOME \
-    && rm /tmp/splunk.tgz \
+    && wget -qO /tmp/${SPLUNK_FILENAME} https://download.splunk.com/products/splunk_light/releases/${SPLUNK_VERSION}/linux/${SPLUNK_FILENAME} \
+    && wget -qO /tmp/${SPLUNK_FILENAME}.md5 https://download.splunk.com/products/${SPLUNK_PRODUCT}/releases/${SPLUNK_VERSION}/linux/${SPLUNK_FILENAME}.md5 \
+    && (cd /tmp && md5sum -c ${SPLUNK_FILENAME}.md5) \
+    && tar xzf /tmp/${SPLUNK_FILENAME} --strip 1 -C ${SPLUNK_HOME} \
+    && rm /tmp/${SPLUNK_FILENAME} \
+    && rm /tmp/${SPLUNK_FILENAME}.md5 \
     && apt-get purge -y --auto-remove wget \
     && mkdir -p /var/opt/splunk \
     && cp -R ${SPLUNK_HOME}/etc ${SPLUNK_BACKUP_DEFAULT_ETC} \
@@ -40,8 +43,8 @@ RUN apt-get update \
 COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod +x /sbin/entrypoint.sh
 
-# Ports Splunk Web, Splunk Daemon, KVStore
-EXPOSE 8000 8089 8191
+# Ports Splunk Web, Splunk Daemon
+EXPOSE 8000 8089
 
 WORKDIR /opt/splunk
 

@@ -2,11 +2,10 @@ FROM ubuntu:trusty
 
 MAINTAINER Denis Gladkikh <docker-splunk@denis.gladkikh.email>
 
-ENV SPLUNK_PRODUCT splunk_light
+ENV SPLUNK_PRODUCT universalforwarder
 ENV SPLUNK_VERSION 6.2.4
 ENV SPLUNK_BUILD 271043
-ENV SPLUNK_MD5SUM 070b961f563537ba2260e04703a966a3
-ENV SPLUNK_FILENAME splunklight-${SPLUNK_VERSION}-${SPLUNK_BUILD}-Linux-x86_64.tgz
+ENV SPLUNK_FILENAME splunkforwarder-${SPLUNK_VERSION}-${SPLUNK_BUILD}-Linux-x86_64.tgz
 
 ENV SPLUNK_HOME /opt/splunk
 ENV SPLUNK_GROUP splunk
@@ -27,8 +26,8 @@ ENV LANG en_US.utf8
 RUN apt-get update \
     && apt-get install -y wget \
     && mkdir -p ${SPLUNK_HOME} \
-    && wget -qO /tmp/${SPLUNK_FILENAME} https://download.splunk.com/products/splunk_light/releases/${SPLUNK_VERSION}/linux/${SPLUNK_FILENAME} \
-    && wget -qO /tmp/${SPLUNK_FILENAME}.md5 https://download.splunk.com/products/${SPLUNK_PRODUCT}/releases/${SPLUNK_VERSION}/linux/${SPLUNK_FILENAME}.md5 \
+    && wget -qO /tmp/${SPLUNK_FILENAME} https://download.splunk.com/products/splunk/releases/${SPLUNK_VERSION}/${SPLUNK_PRODUCT}/linux/${SPLUNK_FILENAME} \
+    && wget -qO /tmp/${SPLUNK_FILENAME}.md5 https://download.splunk.com/products/splunk/releases/${SPLUNK_VERSION}/${SPLUNK_PRODUCT}/linux/${SPLUNK_FILENAME}.md5 \
     && (cd /tmp && md5sum -c ${SPLUNK_FILENAME}.md5) \
     && tar xzf /tmp/${SPLUNK_FILENAME} --strip 1 -C ${SPLUNK_HOME} \
     && rm /tmp/${SPLUNK_FILENAME} \
@@ -43,8 +42,8 @@ RUN apt-get update \
 COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod +x /sbin/entrypoint.sh
 
-# Ports Splunk Web, Splunk Daemon
-EXPOSE 8000 8089
+# Ports Splunk Daemon, Network Input
+EXPOSE 8089/tcp 514/udp
 
 WORKDIR /opt/splunk
 

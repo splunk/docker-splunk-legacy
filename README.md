@@ -67,3 +67,22 @@ docker exec splunk entrypoint.sh splunk version
 ### Hostname
 
 It is recommended to specify `hostname` for this image, so if you will recreate Splunk instance you will be able to easily work with old logs.
+
+## Upgrade from previous version
+
+Upgrade example below
+
+```
+# Use data volume container to persist data between updates
+docker run --name vsplunk -v /opt/splunk/etc -v /opt/splunk/var busybox
+# Start previous version of splunk
+docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d outcoldman/splunk:6.2.3
+# Stop current splunk
+docker exec splunk entrypoint.sh splunk stop
+# Kill splunk image
+docker kill splunk
+# Remove splunk image
+docker rm -v splunk
+# Start new splunk version
+docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d outcoldman/splunk:6.2.4
+```

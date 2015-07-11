@@ -2,6 +2,10 @@
 
 > Docker Splunk Enterprise image
 
+* [Docker imagae with Splunk Enterprise](https://github.com/outcoldman/docker-splunk/tree/splunk)
+* [Docker imagae with Splunk Light](https://github.com/outcoldman/docker-splunk/tree/splunk_light)
+* [Docker imagae with Splunk Universal Forwarder](https://github.com/outcoldman/docker-splunk/tree/splunkforwarder)
+
 ## Running
 
 To start Splunk use next command

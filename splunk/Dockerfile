@@ -3,8 +3,8 @@ FROM ubuntu:trusty
 MAINTAINER Denis Gladkikh <docker-splunk@denis.gladkikh.email>
 
 ENV SPLUNK_PRODUCT splunk
-ENV SPLUNK_VERSION 6.2.4
-ENV SPLUNK_BUILD 271043
+ENV SPLUNK_VERSION 6.1.8
+ENV SPLUNK_BUILD 266909
 ENV SPLUNK_FILENAME splunk-${SPLUNK_VERSION}-${SPLUNK_BUILD}-Linux-x86_64.tgz
 
 ENV SPLUNK_HOME /opt/splunk
@@ -42,8 +42,8 @@ RUN apt-get install -y wget \
 COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod +x /sbin/entrypoint.sh
 
-# Ports Splunk Web, Splunk Daemon, KVStore, Splunk Indexing Port, Network Input
-EXPOSE 8000/tcp 8089/tcp 8191/tcp 9997/tcp 514/udp
+# Ports Splunk Web, Splunk Daemon, Splunk Indexing Port, Network Input
+EXPOSE 8000/tcp 8089/tcp 9997/tcp 514/udp
 
 WORKDIR /opt/splunk
 

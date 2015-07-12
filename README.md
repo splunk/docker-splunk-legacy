@@ -2,6 +2,7 @@
 
 - [Supported tags](#supported-tags)
 - [Introduction](#introduction)
+    - [Version](#version)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Configuration](#configuration)
@@ -17,12 +18,19 @@
 * `6.2`, `6.2.4`, `latest` - Splunk Enterprise
 * `6.2-light`, `6.2.4-light`, `latest-light` - Splunk Light
 * `6.2-forwarder`, `6.2.4-forwarder`, `latest-forwarder` - Splunk Universal Forwarder
+* `6.1`, `6.1.8` - Splunk Enterprise
+* `6.1-forwarder`, `6.1.8-forwarder` - Splunk Universal Forwarder
 
 ## Introduction
 
-Dockerfiles to build [Splunk](https://splunk.com) including Enterpise, Light and Universal Forwarder.
+Dockerfiles to build [Splunk](https://splunk.com) including Enterpise and Universal Forwarder.
 
-> Examples below show you how to pull and start Splunk Enterprise. If you want to use Splunk Light or Universal Forwarder - you just need to change tags to add `-light` or `-forwarder` and use `splunklight` and `universalforwarder` folders.
+> Examples below show you how to pull and start Splunk Enterprise. If you want to use Splunk Universal Forwarder - you just need to change tags to add `-forwarder` and use `universalforwarder` folders.
+
+### Version
+
+* Version: `6.1.8`
+* Build: `266909`
 
 ## Installation
 
@@ -96,9 +104,8 @@ Splunk processes are running under `splunk` user.
 
 Next ports are exposed
 
-* `8000/tcp` - Splunk Web interface (Splunk Enterprise and Splunk Light)
+* `8000/tcp` - Splunk Web interface (Splunk Enterprise)
 * `8089/tcp` - Splunk Services (All Splunk products)
-* `8191/tcp` - Application KV Store (Splunk Enterprise)
 * `9997/tcp` - Splunk Indexing Port (not used by default) (Splunk Enterprise)
 * `514/udp` - Network Input (not used by default) (All Splunk products)
 

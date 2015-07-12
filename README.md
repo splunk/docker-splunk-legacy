@@ -2,7 +2,6 @@
 
 - [Supported tags](#supported-tags)
 - [Introduction](#introduction)
-    - [Version](#version)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Configuration](#configuration)

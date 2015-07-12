@@ -34,7 +34,7 @@ Dockerfiles to build [Splunk](https://splunk.com) including Enterpise, Light and
 
 ## Installation
 
-Pull the image from the [docker registry](https://registry.hub.docker.com/u/outcoldman/docker-splunk/). This is the recommended method of installation as it is easier to update image. These builds are performed by the **Docker Trusted Build** service.
+Pull the image from the [docker registry](https://registry.hub.docker.com/u/outcoldman/splunk/). This is the recommended method of installation as it is easier to update image. These builds are performed by the **Docker Trusted Build** service.
 
 ```bash
 docker pull outcoldman/splunk:6.2.4

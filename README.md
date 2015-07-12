@@ -1,5 +1,6 @@
 # Table of Contents
 
+- [Supported tags](#supported-tags)
 - [Introduction](#introduction)
     - [Version](#version)
 - [Installation](#installation)

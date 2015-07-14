@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 if [ "$1" = 'splunk' ]; then
   shift
   sudo -HEu ${SPLUNK_USER} ${SPLUNK_HOME}/bin/splunk "$@"

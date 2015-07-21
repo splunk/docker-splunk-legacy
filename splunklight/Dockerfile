@@ -43,7 +43,7 @@ COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod +x /sbin/entrypoint.sh
 
 # Ports Splunk Web, Splunk Daemon, Network Input
-EXPOSE 8000/tcp 8089/tcp 514/udp
+EXPOSE 8000/tcp 8089/tcp 514
 
 WORKDIR /opt/splunk
 

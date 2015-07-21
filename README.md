@@ -108,7 +108,7 @@ Next ports are exposed
 * `8089/tcp` - Splunk Services (All Splunk products)
 * `8191/tcp` - Application KV Store (Splunk Enterprise)
 * `9997/tcp` - Splunk Indexing Port (not used by default) (Splunk Enterprise)
-* `514/udp` - Network Input (not used by default) (All Splunk products)
+* `514` - Network Input (not used by default) (All Splunk products)
 
 ### Entrypoint
 

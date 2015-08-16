@@ -21,6 +21,9 @@ RUN apt-get update && apt-get install -y locales \
     && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 ENV LANG en_US.utf8
 
+# pdfgen dependency
+RUN apt-get install libgssapi-krb5-2
+
 # Download official Splunk release, verify checksum and unzip in /opt/splunk
 # Also backup etc folder, so it will be later copied to the linked volume
 RUN apt-get install -y wget \

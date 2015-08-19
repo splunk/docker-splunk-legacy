@@ -108,7 +108,10 @@ Next ports are exposed
 * `8089/tcp` - Splunk Services (All Splunk products)
 * `8191/tcp` - Application KV Store (Splunk Enterprise)
 * `9997/tcp` - Splunk Indexing Port (not used by default) (Splunk Enterprise)
-* `514` - Network Input (not used by default) (All Splunk products)
+* `1514` - Network Input (not used by default) (All Splunk products)
+
+> We are using `1514` instead of standard `514` syslog port because ports below 
+> 1024 are reserved for root access only. See [Run Splunk Enterprise as a different or non-root user](http://docs.splunk.com/Documentation/Splunk/latest/Installation/RunSplunkasadifferentornon-rootuser).
 
 ### Entrypoint
 
@@ -123,6 +126,16 @@ docker exec splunk entrypoint.sh splunk version
 ### Hostname
 
 It is recommended to specify `hostname` for this image, so if you will recreate Splunk instance you will keep the same hostname.
+
+## Working with Splunk Forwarder
+
+Using `entrypoint.sh` you can enable forwarding to your Splunk Indexer and also
+open port for listening using next two commands
+
+```
+docker exec -it splunk_forwarder entrypoint.sh splunk add forward-server splunk_indexer:9997
+docker exec -it splunk_forwarder entrypoint.sh splunk add udp 1514
+```
 
 ## Upgrade from previous version
 

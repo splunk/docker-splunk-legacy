@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
@@ -15,7 +15,9 @@ elif [ "$1" = 'start-service' ]; then
   fi
 
   sudo -HEu ${SPLUNK_USER} ${SPLUNK_HOME}/bin/splunk start --accept-license --answer-yes --no-prompt
-  sudo -HEu ${SPLUNK_USER} tail -f ${SPLUNK_HOME}/var/log/splunk/splunkd_stderr.log
+  trap "sudo -HEu ${SPLUNK_USER} ${SPLUNK_HOME}/bin/splunk stop" SIGINT SIGTERM EXIT
+  sudo -HEu ${SPLUNK_USER} tail -n 0 -f ${SPLUNK_HOME}/var/log/splunk/splunkd_stderr.log &
+  wait
 else
   "$@"
 fi

@@ -133,10 +133,8 @@ Upgrade example below
 docker run --name vsplunk -v /opt/splunk/etc -v /opt/splunk/var busybox
 # Start old version of Splunk Enterprise
 docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d outcoldman/splunk:6.2.3
-# Stop current Splunk Enterprise
-docker exec splunk entrypoint.sh splunk stop
-# Kill Splunk Enterprise container
-docker kill splunk
+# Stop Splunk Enterprise container
+docker stop splunk
 # Remove Splunk Enterprise container
 docker rm -v splunk
 # Start Splunk Enterprise container with new version

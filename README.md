@@ -11,7 +11,7 @@
     - [Ports](#ports)
     - [Entrypoint](#entrypoint)
     - [Hostname](#hostname)
-- [Data Store](#upgrade-from-previous-version)
+- [Upgrade from previous version](#upgrade-from-previous-version)
 
 ## Supported tags
 

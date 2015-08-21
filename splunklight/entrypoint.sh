@@ -18,7 +18,7 @@ elif [ "$1" = 'start-service' ]; then
   trap "sudo -HEu ${SPLUNK_USER} ${SPLUNK_HOME}/bin/splunk stop" SIGINT SIGTERM EXIT
 
   if [[ -n ${SPLUNK_FORAWARD_SERVER} ]]; then
-    if sudo -HEu ${SPLUNK_USER} ${SPLUNK_HOME}/bin/splunk list forward-server | grep -q "${SPLUNK_FORWARD_SERVER}"; then
+    if sudo -HEu ${SPLUNK_USER} ${SPLUNK_HOME}/bin/splunk list forward-server -auth admin:changeme | grep -q "${SPLUNK_FORWARD_SERVER}"; then
       sudo -HEu ${SPLUNK_USER} ${SPLUNK_HOME}/bin/splunk add forward-server "${SPLUNK_FORWARD_SERVER}" -auth admin:changeme
     fi
   fi

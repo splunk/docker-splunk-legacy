@@ -23,6 +23,13 @@
 
 ## Introduction
 
+> NOTE: I'm working at Splunk, but this is not an official Splunk images.
+> I build them in my free time when I'm not at work. I have some knowledge
+> about Splunk, but you should think twice before putting them in
+> production. I run these images on my own home server just for
+> my personal needs. If you have any issues - feel free to open a
+> [bug](https://github.com/outcoldman/docker-splunk/issues).
+
 Dockerfiles to build [Splunk](https://splunk.com) including Enterpise, Light and Universal Forwarder.
 
 > Examples below show you how to pull and start Splunk Enterprise. If you want to use Splunk Light or Universal Forwarder - you just need to change tags to add `-light` or `-forwarder` and use `splunklight` and `universalforwarder` folders.

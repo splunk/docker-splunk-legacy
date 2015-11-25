@@ -15,11 +15,12 @@
 
 ## Supported tags
 
-* `6.2`, `6.2.4`, `latest` - Splunk Enterprise
-* `6.2-light`, `6.2.4-light`, `latest-light` - Splunk Light
-* `6.2-forwarder`, `6.2.4-forwarder`, `latest-forwarder` - Splunk Universal Forwarder
+Current branch:
+
 * `6.1`, `6.1.8` - Splunk Enterprise
 * `6.1-forwarder`, `6.1.8-forwarder` - Splunk Universal Forwarder
+
+For previous versions or newest releases see other branches.
 
 ## Introduction
 

@@ -3,8 +3,8 @@ FROM ubuntu:trusty
 MAINTAINER Denis Gladkikh <docker-splunk@denis.gladkikh.email>
 
 ENV SPLUNK_PRODUCT universalforwarder
-ENV SPLUNK_VERSION 6.3.1
-ENV SPLUNK_BUILD f3e41e4b37b2
+ENV SPLUNK_VERSION 6.3.2
+ENV SPLUNK_BUILD aaff59bb082c
 ENV SPLUNK_FILENAME splunkforwarder-${SPLUNK_VERSION}-${SPLUNK_BUILD}-Linux-x86_64.tgz
 
 ENV SPLUNK_HOME /opt/splunk

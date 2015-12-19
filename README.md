@@ -17,9 +17,9 @@
 
 Current branch:
 
-* `6.3`, `6.3.1`, `latest` - Splunk Enterprise
-* `6.3-light`, `6.3.1-light`, `latest-light` - Splunk Light
-* `6.3-forwarder`, `6.3.1-forwarder`, `latest-forwarder` - Splunk Universal Forwarder
+* `6.3`, `6.3.2`, `latest` - Splunk Enterprise
+* `6.3-light`, `6.3.2-light`, `latest-light` - Splunk Light
+* `6.3-forwarder`, `6.3.2-forwarder`, `latest-forwarder` - Splunk Universal Forwarder
 
 For previous versions or newest releases see other branches.
 
@@ -38,7 +38,7 @@ Dockerfiles to build [Splunk](https://splunk.com) including Enterpise, Light and
 
 ### Version
 
-* Version: `6.3.1`
+* Version: `6.3.2`
 * Build: `f3e41e4b37b2`
 
 ## Installation
@@ -46,7 +46,7 @@ Dockerfiles to build [Splunk](https://splunk.com) including Enterpise, Light and
 Pull the image from the [docker registry](https://registry.hub.docker.com/u/outcoldman/splunk/). This is the recommended method of installation as it is easier to update image. These builds are performed by the **Docker Trusted Build** service.
 
 ```bash
-docker pull outcoldman/splunk:6.3.1
+docker pull outcoldman/splunk:6.3.2
 ```
 
 Or you can pull latest version.
@@ -68,14 +68,14 @@ docker build --tag="$USER/splunk" .
 To manually start Splunk Enterprise container 
 
 ```bash
-docker run --hostname splunk -p 8000:8000 -d outcoldman/splunk:6.3.1
+docker run --hostname splunk -p 8000:8000 -d outcoldman/splunk:6.3.2
 ```
 
 This docker image has two data volumes `/opt/splunk/etc` and `/opt/splunk/var` (See [Data Store](#data-store)). To avoid losing any data when container is stopped/deleted mount these volumes from docker volume containers (see [Managing data in containers](https://docs.docker.com/userguide/dockervolumes/))
 
 ```bash
 docker run --name vsplunk -v /opt/splunk/etc -v /opt/splunk/var busybox
-docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d outcoldman/splunk:6.3.1
+docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d outcoldman/splunk:6.3.2
 ```
 
 Or if you use [docker-compose](https://docs.docker.com/compose/)
@@ -88,7 +88,7 @@ vsplunk:
     - /opt/splunk/var
 
 splunk:
-  image: outcoldman/splunk:6.3.1
+  image: outcoldman/splunk:6.3.2
   hostname: splunk
   volumes_from:
     - vsplunk
@@ -161,5 +161,5 @@ docker stop splunk
 # Remove Splunk Enterprise container
 docker rm -v splunk
 # Start Splunk Enterprise container with new version
-docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d outcoldman/splunk:6.3.1
+docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d outcoldman/splunk:6.3.2
 ```

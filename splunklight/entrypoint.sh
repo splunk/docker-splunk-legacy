@@ -11,6 +11,12 @@ elif [ "$1" = 'start-service' ]; then
     chown -R ${SPLUNK_USER}:${SPLUNK_GROUP} ${SPLUNK_HOME}
   fi
 
+  # If version file exists already - this Splunk has been configured before
+  __configured=false
+  if [[ -f ${SPLUNK_HOME}/etc/splunk.version ]]; then
+    __configured=true
+  fi
+
   # If these files are different override etc folder (possible that this is upgrade or first start cases)
   # Also override ownership of these files to splunk:splunk
   if ! $(cmp --silent /var/opt/splunk/etc/splunk.version ${SPLUNK_HOME}/etc/splunk.version); then
@@ -22,10 +28,41 @@ elif [ "$1" = 'start-service' ]; then
   sudo -HEu ${SPLUNK_USER} ${SPLUNK_HOME}/bin/splunk start --accept-license --answer-yes --no-prompt
   trap "sudo -HEu ${SPLUNK_USER} ${SPLUNK_HOME}/bin/splunk stop" SIGINT SIGTERM EXIT
 
-  if [[ -n ${SPLUNK_FORWARD_SERVER} ]]; then
-    if ! sudo -HEu ${SPLUNK_USER} ${SPLUNK_HOME}/bin/splunk list forward-server -auth admin:changeme | grep -q "${SPLUNK_FORWARD_SERVER}"; then
-      sudo -HEu ${SPLUNK_USER} ${SPLUNK_HOME}/bin/splunk add forward-server "${SPLUNK_FORWARD_SERVER}" -auth admin:changeme
+  # If this is first time we start this splunk instance
+  if [[ $__configured == "false" ]]; then
+    # Setup listening
+    # http://docs.splunk.com/Documentation/Splunk/latest/Forwarding/Enableareceiver
+    if [[ -n ${SPLUNK_ENABLE_LISTEN} ]]; then
+      sudo -HEu ${SPLUNK_USER} sh -c "${SPLUNK_HOME}/bin/splunk enable listen ${SPLUNK_ENABLE_LISTEN} -auth admin:changeme ${SPLUNK_ENABLE_LISTEN_ARGS}"
     fi
+
+    # Setup monitoring
+    # http://docs.splunk.com/Documentation/Splunk/latest/Data/MonitorfilesanddirectoriesusingtheCLI
+    # http://docs.splunk.com/Documentation/Splunk/latest/Data/Monitornetworkports
+    if [[ -n ${SPLUNK_ADD} ]]; then
+        sudo -HEu ${SPLUNK_USER} sh -c "${SPLUNK_HOME}/bin/splunk add ${SPLUNK_ADD} -auth admin:changeme"
+    fi
+    for n in {1..30}; do
+      if [[ -n $(eval echo \$\{SPLUNK_ADD_${n}\}) ]]; then
+        sudo -HEu ${SPLUNK_USER} sh -c "${SPLUNK_HOME}/bin/splunk add $(eval echo \$\{SPLUNK_ADD_${n}\}) -auth admin:changeme"
+      else
+        # We do not want to iterate all, if one in the sequence is not set
+        break
+      fi
+    done
+
+    # Execute anything
+    if [[ -n ${SPLUNK_CMD} ]]; then
+        sudo -HEu ${SPLUNK_USER} sh -c "${SPLUNK_HOME}/bin/splunk ${SPLUNK_CMD}"
+    fi
+    for n in {1..30}; do
+      if [[ -n $(eval echo \$\{SPLUNK_CMD_${n}\}) ]]; then
+        sudo -HEu ${SPLUNK_USER} sh -c "${SPLUNK_HOME}/bin/splunk $(eval echo \$\{SPLUNK_CMD_${n}\})"
+      else
+        # We do not want to iterate all, if one in the sequence is not set
+        break
+      fi
+    done
   fi
 
   sudo -HEu ${SPLUNK_USER} tail -n 0 -f ${SPLUNK_HOME}/var/log/splunk/splunkd_stderr.log &

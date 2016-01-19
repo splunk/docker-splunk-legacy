@@ -12,6 +12,7 @@
     - [Entrypoint](#entrypoint)
     - [Hostname](#hostname)
     - [Basic configuration using Environment Variables](#basic-configuration-using-environment-variables)
+        - [Example](#example)
 - [Upgrade from previous version](#upgrade-from-previous-version)
 
 ## Supported tags
@@ -181,7 +182,7 @@ configuration files or deployment server.
 
 #### Example
 
-> This is just some dumb example to show how configuration works, do not consider
+> This is just a simple example to show how configuration works, do not consider
 > it as a *best practice* example.
 
 ```
@@ -225,16 +226,6 @@ After that you will be able to forward syslog data to the *udp* port of
 container *forwarder* (we do not publish port, so only from internal
 containers). You should see all the data on both indexers. Also you should see
 forwarder registered with deployment server.
-
-## Working with Splunk Forwarder
-
-Using `entrypoint.sh` you can enable forwarding to your Splunk Indexer and also
-open port for listening using next two commands
-
-```
-docker exec -it splunk_forwarder entrypoint.sh splunk add forward-server splunk_indexer:9997
-docker exec -it splunk_forwarder entrypoint.sh splunk add udp 1514
-```
 
 ## Upgrade from previous version
 

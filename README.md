@@ -17,8 +17,8 @@
 
 Current branch:
 
-* `6.1`, `6.1.8` - Splunk Enterprise
-* `6.1-forwarder`, `6.1.8-forwarder` - Splunk Universal Forwarder
+* `6.1`, `6.1.10` - Splunk Enterprise
+* `6.1-forwarder`, `6.1.10-forwarder` - Splunk Universal Forwarder
 
 For previous versions or newest releases see other branches.
 
@@ -30,8 +30,8 @@ Dockerfiles to build [Splunk](https://splunk.com) including Enterpise and Univer
 
 ### Version
 
-* Version: `6.1.8`
-* Build: `266909`
+* Version: `6.1.10`
+* Build: `276365`
 
 ## Installation
 

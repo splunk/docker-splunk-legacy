@@ -3,8 +3,8 @@ FROM ubuntu:trusty
 MAINTAINER Denis Gladkikh <docker-splunk@denis.gladkikh.email>
 
 ENV SPLUNK_PRODUCT splunk_light
-ENV SPLUNK_VERSION 6.2.8
-ENV SPLUNK_BUILD 275559
+ENV SPLUNK_VERSION 6.2.9
+ENV SPLUNK_BUILD 276372
 ENV SPLUNK_FILENAME splunklight-${SPLUNK_VERSION}-${SPLUNK_BUILD}-Linux-x86_64.tgz
 
 ENV SPLUNK_HOME /opt/splunk

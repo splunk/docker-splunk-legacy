@@ -37,9 +37,24 @@ elif [ "$1" = 'start-service' ]; then
   fi
 
   if [[ $__license_ok == "false" ]]; then
-    echo "It seems like that this is the first time you are running this container."
-    echo "You need to run this container with TTY support (just add a -it switch) to accept the license."
-    echo "Or start container with environment variable SPLUNK_START_ARGS=--accept-license."
+    cat << EOF
+Splunk Enterprise
+==============
+
+  Available Options:
+
+      - Launch container in Interactive mode "-it" to review and accept
+        end user license agreement
+      - If you have reviewed and accepted the license, start container
+        with the environment variable:
+            SPLUNK_START_ARGS=--accept-license
+
+  Usage:
+
+    docker run -it outcoldman/splunk:latest
+    docker run --env SPLUNK_START_ARGS="--accept-license" outcoldman/splunk:latest
+
+EOF
     exit 1
   fi
 

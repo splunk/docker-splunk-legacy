@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM debian:jessie
 
 MAINTAINER Denis Gladkikh <docker-splunk@denis.gladkikh.email>
 

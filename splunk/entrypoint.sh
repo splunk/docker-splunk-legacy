@@ -17,15 +17,33 @@ elif [ "$1" = 'start-service' ]; then
     __configured=true
   fi
 
+  __license_ok=false
   # If these files are different override etc folder (possible that this is upgrade or first start cases)
   # Also override ownership of these files to splunk:splunk
   if ! $(cmp --silent /var/opt/splunk/etc/splunk.version ${SPLUNK_HOME}/etc/splunk.version); then
     cp -fR /var/opt/splunk/etc ${SPLUNK_HOME}
     chown -R ${SPLUNK_USER}:${SPLUNK_GROUP} ${SPLUNK_HOME}/etc
     chown -R ${SPLUNK_USER}:${SPLUNK_GROUP} ${SPLUNK_HOME}/var
+  else
+    __license_ok=true
   fi
 
-  sudo -HEu ${SPLUNK_USER} ${SPLUNK_HOME}/bin/splunk start --accept-license --answer-yes --no-prompt
+  if tty -s; then
+    __license_ok=true
+  fi
+
+  if [[ "$SPLUNK_START_ARGS" == *"--accept-license"* ]]; then
+    __license_ok=true
+  fi
+
+  if [[ $__license_ok == "false" ]]; then
+    echo "It seems like that this is the first time you are running this container."
+    echo "You need to run this container with TTY support (just add a -it switch) to accept the license."
+    echo "Or start container with environment variable SPLUNK_START_ARGS=--accept-license."
+    exit 1
+  fi
+
+  sudo -HEu ${SPLUNK_USER} ${SPLUNK_HOME}/bin/splunk start ${SPLUNK_START_ARGS}
   trap "sudo -HEu ${SPLUNK_USER} ${SPLUNK_HOME}/bin/splunk stop" SIGINT SIGTERM EXIT
 
   # If this is first time we start this splunk instance

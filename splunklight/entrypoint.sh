@@ -38,7 +38,7 @@ elif [ "$1" = 'start-service' ]; then
 
   if [[ $__license_ok == "false" ]]; then
     cat << EOF
-Splunk Enterprise
+Splunk Light
 ==============
 
   Available Options:

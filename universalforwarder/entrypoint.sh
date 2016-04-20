@@ -51,8 +51,8 @@ Splunk Forwarder
 
   Usage:
 
-    docker run -it outcoldman/splunk:latest
-    docker run --env SPLUNK_START_ARGS="--accept-license" outcoldman/splunk:latest
+    docker run -it outcoldman/splunk:latest-forwarder
+    docker run --env SPLUNK_START_ARGS="--accept-license" outcoldman/splunk:latest-forwarder
 
 EOF
     exit 1

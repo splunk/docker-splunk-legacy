@@ -83,19 +83,27 @@ docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -
 Or if you use [docker-compose](https://docs.docker.com/compose/)
 
 ```
-vsplunk:
-  image: busybox
-  volumes:
-    - /opt/splunk/etc
-    - /opt/splunk/var
+version: "2"
 
-splunk:
-  image: outcoldman/splunk:6.4.0
-  hostname: splunk
-  volumes_from:
-    - vsplunk
-  ports:
-    - 8000:8000
+networks:
+  logging:
+    driver: bridge
+
+services:
+  splunk:
+    image: outcoldman/splunk:6.4
+    hostname: splunk
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_ENABLE_DEPLOY_SERVER=true
+    ports:
+      - 8000:8000
+      - 8088-8089:8088-8089
+    networks:
+      - microservices
+    volumes:
+      - ./data/etc:/opt/splunk/etc
+      - ./data/var:/opt/splunk/var
 ```
 
 ## Configuration
@@ -233,6 +241,90 @@ After that you will be able to forward syslog data to the *udp* port of
 container *forwarder* (we do not publish port, so only from internal
 containers). You should see all the data on both indexers. Also you should see
 forwarder registered with deployment server.
+
+### Native Docker Driver
+
+The Native Docker Driver was announced in Dec 2015 and you can readme more about it at http://blogs.splunk.com/2015/12/16/splunk-logging-driver-for-docker/.
+
+Before configuring a service to run the Native Docker Driver, make sure to setup the Server. 
+
+* Go to Settings -> Data Inputs and create an HTTP Event Collector
+ * Follow the form and create it, copying the value of the TOKEN, like `18EDED48-65E1-4E3D-B47C-C2F14675A6C7`.
+* Go to Settings -> Data Inputs -> Http Event Collector -> Global Settings
+ * Toggle "All Tokens" to "Enable"
+ * Disable the Checkbox "Enable SSL"
+ * Notice that the collector port is 8088
+* Edit the Source Type of the Token created to your application. For instance, if we start Nginx as shown below, choose "web"
+
+With those settings, you will successfully start a Docker container using the Native Drivers. That is, no more Splunk Forwarders! For instance, suppose you want to start an Nginx container.
+
+```
+version: '2'
+
+services:
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    logging:
+      driver: splunk
+      options:
+        splunk-url: "http://localhost:8088"
+        splunk-token: "18EDED48-65E1-4E3D-B47C-C2F14675A6C7"
+```
+
+You can verify the current services running as follows:
+
+```
+$ docker ps 
+CONTAINER ID        IMAGE                   COMMAND                  CREATED              STATUS              PORTS                                                                                    NAMES
+39d4cfa83146        nginx                   "nginx -g 'daemon off"   About a minute ago   Up About a minute   0.0.0.0:80->80/tcp, 443/tcp                                                              microservices_nginx_1
+8c4ade90c02e        outcoldman/splunk:6.4   "/sbin/entrypoint.sh "   55 minutes ago       Up 55 minutes       0.0.0.0:8000->8000/tcp, 1514/tcp, 8191/tcp, 9997/tcp, 0.0.0.0:8088-8089->8088-8089/tcp   logging_splunk_1
+```
+
+Make calls to the web server and make sure it will show up in Splunk!!! Automatically!
+
+```
+~/dev/github/intuit/servicesplatform-tools/microservices ⌚ 23:54:27
+$ curl localhost/      
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+
+~/dev/github/intuit/servicesplatform-tools/microservices ⌚ 23:54:31
+$ curl localhost/perfect
+<html>
+<head><title>404 Not Found</title></head>
+<body bgcolor="white">
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.9.15</center>
+</body>
+</html>
+```
+
+![Image](http://s32.postimg.org/3y5gc69xh/Screen_Shot_2016_05_06_at_11_57_09_PM.png)
 
 ## Upgrade from previous version
 

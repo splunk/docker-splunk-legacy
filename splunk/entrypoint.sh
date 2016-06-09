@@ -117,6 +117,21 @@ EOF
       fi
     done
 
+    # Disable the password rotation UI
+    if [[ -n ${SPLUNK_DISABLE_PW_CHANGE} ]]; then
+        touch ${SPLUNK_HOME}/etc/.ui_login
+    fi
+
+    # Fix replication addresses
+    if [[ -n ${SPLUNK_FIX_DOCKER_REP_ADDR} ]]; then
+      if [[ -z `grep -o "clustering" "${SPLUNK_HOME}/etc/system/local/server.conf"` ]]; then
+        echo "[clustering]" >> "${SPLUNK_HOME}/etc/system/local/server.conf"
+      fi
+      IP=`/sbin/ip route|awk '/scope/ { print $9 }'` && sed -i '/\[clustering\]/a register_search_address = '$IP "${SPLUNK_HOME}/etc/system/local/server.conf"
+      IP=`/sbin/ip route|awk '/scope/ { print $9 }'` && sed -i '/\[clustering\]/a register_forwarder_address = '$IP "${SPLUNK_HOME}/etc/system/local/server.conf"
+      IP=`/sbin/ip route|awk '/scope/ { print $9 }'` && sed -i '/\[clustering\]/a register_replication_address = '$IP "${SPLUNK_HOME}/etc/system/local/server.conf"
+    fi
+
     # Execute anything
     if [[ -n ${SPLUNK_CMD} ]]; then
         sudo -HEu ${SPLUNK_USER} sh -c "${SPLUNK_HOME}/bin/splunk ${SPLUNK_CMD}"

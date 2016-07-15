@@ -83,19 +83,23 @@ docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -
 Or if you use [docker-compose](https://docs.docker.com/compose/)
 
 ```
-vsplunk:
-  image: busybox
-  volumes:
-    - /opt/splunk/etc
-    - /opt/splunk/var
+version: '2'
+services:
+  vsplunk:
+    image: busybox
+    volumes:
+      - /opt/splunk/etc
+      - /opt/splunk/var
 
-splunk:
-  image: outcoldman/splunk:6.4.1
-  hostname: splunk
-  volumes_from:
-    - vsplunk
-  ports:
-    - 8000:8000
+  splunk:
+    image: outcoldman/splunk:latest
+    environment: 
+      - SPLUNK_START_ARGS=--accept-license
+    hostname: splunk
+    volumes_from:
+      - vsplunk
+    ports:
+      - 8000:8000
 ```
 
 ## Configuration

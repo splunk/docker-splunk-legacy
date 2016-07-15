@@ -85,21 +85,22 @@ Or if you use [docker-compose](https://docs.docker.com/compose/)
 ```
 version: '2'
 services:
-  vsplunk:
-    image: busybox
-    volumes:
-      - /opt/splunk/etc
-      - /opt/splunk/var
 
   splunk:
     image: outcoldman/splunk:latest
     environment: 
       - SPLUNK_START_ARGS=--accept-license
     hostname: splunk
-    volumes_from:
-      - vsplunk
+    volumes:
+      - configs:/opt/splunk/etc
+      - data:/opt/splunk/var
     ports:
       - 8000:8000
+volumes:
+  configs:
+    driver: local
+  data:
+    driver: local
 ```
 
 ## Configuration

@@ -92,12 +92,12 @@ services:
       - SPLUNK_START_ARGS=--accept-license
     hostname: splunk
     volumes:
-      - configs:/opt/splunk/etc
+      - config:/opt/splunk/etc
       - data:/opt/splunk/var
     ports:
       - 8000:8000
 volumes:
-  configs:
+  config:
     driver: local
   data:
     driver: local

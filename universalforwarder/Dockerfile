@@ -38,7 +38,7 @@ RUN apt-get install -y wget sudo \
     && chown -R ${SPLUNK_USER}:${SPLUNK_GROUP} ${SPLUNK_HOME} \
     && chown -R ${SPLUNK_USER}:${SPLUNK_GROUP} ${SPLUNK_BACKUP_DEFAULT_ETC} \
     && rm -rf /var/lib/apt/lists/* \
-    && echo source /opt/splunk/bin/setSplunkEnv >> /root/.bashrc
+    && echo source /opt/splunk/bin/setSplunkEnv >> /etc/bash.bashrc
 
 COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod +x /sbin/entrypoint.sh

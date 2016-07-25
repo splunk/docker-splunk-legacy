@@ -14,7 +14,7 @@ ENV SPLUNK_BACKUP_DEFAULT_ETC /var/opt/splunk
 
 # add splunk:splunk user
 RUN groupadd -r ${SPLUNK_GROUP} \
-    && useradd -r -m -g ${SPLUNK_GROUP} ${SPLUNK_USER}
+    && useradd -r -m -s /bin/bash -g ${SPLUNK_GROUP} ${SPLUNK_USER}
 
 # make the "en_US.UTF-8" locale so splunk will be utf-8 enabled by default
 RUN apt-get update && apt-get install -y locales \
@@ -40,7 +40,8 @@ RUN apt-get install -y wget sudo \
     && rm -fR ${SPLUNK_HOME}/etc \
     && chown -R ${SPLUNK_USER}:${SPLUNK_GROUP} ${SPLUNK_HOME} \
     && chown -R ${SPLUNK_USER}:${SPLUNK_GROUP} ${SPLUNK_BACKUP_DEFAULT_ETC} \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && echo source /opt/splunk/bin/setSplunkEnv >> /root/.bashrc
 
 COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod +x /sbin/entrypoint.sh

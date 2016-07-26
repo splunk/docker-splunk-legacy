@@ -133,6 +133,10 @@ EOF
 
   sudo -HEu ${SPLUNK_USER} tail -n 0 -f ${SPLUNK_HOME}/var/log/splunk/splunkd_stderr.log &
   wait
+elif [ "$1" = 'splunk-bash' ]; then
+  source /opt/splunk/bin/setSplunkEnv
+  cd $SPLUNK_HOME
+  su splunk
 else
   "$@"
 fi

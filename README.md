@@ -19,9 +19,9 @@
 
 Current branch:
 
-* `6.4`, `6.4.2`, `latest` - Splunk Enterprise
-* `6.4-light`, `6.4.2-light`, `latest-light` - Splunk Light
-* `6.4-forwarder`, `6.4.2-forwarder`, `latest-forwarder` - Splunk Universal Forwarder
+* `6.4`, `6.4.3`, `latest` - Splunk Enterprise
+* `6.4-light`, `6.4.3-light`, `latest-light` - Splunk Light
+* `6.4-forwarder`, `6.4.3-forwarder`, `latest-forwarder` - Splunk Universal Forwarder
 
 For previous versions or newest releases see other branches.
 
@@ -40,15 +40,15 @@ Dockerfiles to build [Splunk](https://splunk.com) including Enterpise, Light and
 
 ### Version
 
-* Version: `6.4.2`
-* Build: `00f5bb3fa822`
+* Version: `6.4.3`
+* Build: `b03109c2bad4`
 
 ## Installation
 
 Pull the image from the [docker registry](https://registry.hub.docker.com/u/outcoldman/splunk/). This is the recommended method of installation as it is easier to update image. These builds are performed by the **Docker Trusted Build** service.
 
 ```bash
-docker pull outcoldman/splunk:6.4.2
+docker pull outcoldman/splunk:6.4.3
 ```
 
 Or you can pull latest version.
@@ -70,32 +70,37 @@ docker build --tag="$USER/splunk" .
 To manually start Splunk Enterprise container 
 
 ```bash
-docker run --hostname splunk -p 8000:8000 -d --env SPLUNK_START_ARGS="--accept-license" outcoldman/splunk:6.4.2
+docker run --hostname splunk -p 8000:8000 -d --env SPLUNK_START_ARGS="--accept-license --answer-yes --no-prompt" outcoldman/splunk:6.4.3
 ```
 
 This docker image has two data volumes `/opt/splunk/etc` and `/opt/splunk/var` (See [Data Store](#data-store)). To avoid losing any data when container is stopped/deleted mount these volumes from docker volume containers (see [Managing data in containers](https://docs.docker.com/userguide/dockervolumes/))
 
 ```bash
 docker run --name vsplunk -v /opt/splunk/etc -v /opt/splunk/var busybox
-docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d --env SPLUNK_START_ARGS="--accept-license" outcoldman/splunk:6.4.2
+docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d --env SPLUNK_START_ARGS="--accept-license --answer-yes --no-prompt" outcoldman/splunk:6.4.3
 ```
 
 Or if you use [docker-compose](https://docs.docker.com/compose/)
 
 ```
-vsplunk:
-  image: busybox
-  volumes:
-    - /opt/splunk/etc
-    - /opt/splunk/var
+version: '2'
+services:
 
-splunk:
-  image: outcoldman/splunk:6.4.2
-  hostname: splunk
-  volumes_from:
-    - vsplunk
-  ports:
-    - 8000:8000
+  splunk:
+    image: outcoldman/splunk:6.4.3
+    environment: 
+      - SPLUNK_START_ARGS=--accept-license --answer-yes --no-prompt
+    hostname: splunk
+    volumes:
+      - config:/opt/splunk/etc
+      - data:/opt/splunk/var
+    ports:
+      - 8000:8000
+volumes:
+  config:
+    driver: local
+  data:
+    driver: local
 ```
 
 ## Configuration
@@ -179,7 +184,7 @@ configuration files or deployment server.
         `SPLUNK_CMD_<1..30>`.
     - Example `--env SPLUNK_CMD='edit user admin -password random_password -role
         admin -auth admin:changeme'`.
-- `SPLUNK_START_ARGS='--accept-license"` - Splunk requires you to accept the
+- `SPLUNK_START_ARGS='--accept-license --answer-yes --no-prompt"` - Splunk requires you to accept the
   license, I (maintainer of this image) don't want do that for you, so please
   add this on your own or start container with `-it` switch.
 
@@ -197,7 +202,7 @@ configuration files or deployment server.
     --name splunkdeploymentserver \
     --publish 8000 \
     --env SPLUNK_ENABLE_DEPLOY_SERVER=true \
-    --env SPLUNK_START_ARGS="--accept-license" \
+    --env SPLUNK_START_ARGS="--accept-license --answer-yes --no-prompt" \
     outcoldman/splunk
 > echo "Starting indexer 1"
 > docker run -d --net splunk \
@@ -205,7 +210,7 @@ configuration files or deployment server.
     --name splunkindexer1 \
     --publish 8000 \
     --env SPLUNK_ENABLE_LISTEN=9997 \
-    --env SPLUNK_START_ARGS="--accept-license" \
+    --env SPLUNK_START_ARGS="--accept-license --answer-yes --no-prompt" \
     outcoldman/splunk
 > echo "Starging indexer 2"
 > docker run --rm --net splunk \
@@ -213,7 +218,7 @@ configuration files or deployment server.
     --name splunkindexer2 \
     --publish 8000 \
     --env SPLUNK_ENABLE_LISTEN=9997 \
-    --env SPLUNK_START_ARGS="--accept-license" \
+    --env SPLUNK_START_ARGS="--accept-license --answer-yes --no-prompt" \
     outcoldman/splunk
 > echo "Starting forwarder, which forwards data to 2 indexers by cloning events"
 > docker run -d --net splunk \
@@ -225,7 +230,7 @@ configuration files or deployment server.
     --env SPLUNK_FORWARD_SERVER_1_ARGS="-method clone" \
     --env SPLUNK_ADD='udp 1514' \
     --env SPLUNK_DEPLOYMENT_SERVER='splunkdeploymentserver:8089' \
-    --env SPLUNK_START_ARGS="--accept-license" \
+    --env SPLUNK_START_ARGS="--accept-license --answer-yes --no-prompt" \
     outcoldman/splunk:forwarder
 ```
 
@@ -242,11 +247,11 @@ Upgrade example below
 # Use data volume container to persist data between upgrades
 docker run --name vsplunk -v /opt/splunk/etc -v /opt/splunk/var busybox
 # Start old version of Splunk Enterprise
-docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d --env SPLUNK_START_ARGS="--accept-license" outcoldman/splunk:6.4.1
+docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d --env SPLUNK_START_ARGS="--accept-license --answer-yes --no-prompt" outcoldman/splunk:6.4.2
 # Stop Splunk Enterprise container
 docker stop splunk
 # Remove Splunk Enterprise container
 docker rm -v splunk
 # Start Splunk Enterprise container with new version
-docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d --env SPLUNK_START_ARGS="--accept-license" outcoldman/splunk:6.4.2
+docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d --env SPLUNK_START_ARGS="--accept-license --answer-yes --no-prompt" outcoldman/splunk:6.4.3
 ```

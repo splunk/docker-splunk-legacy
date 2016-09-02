@@ -59,6 +59,21 @@ EOF
     exit 1
   fi
 
+  if [[ $__configured == "false" ]]; then
+    # If we have not configured yet allow user to specify some commands which can be executed before we start Splunk for the first time
+    if [[ -n ${SPLUNK_BEFORE_START_CMD} ]]; then
+      sudo -HEu ${SPLUNK_USER} sh -c "${SPLUNK_HOME}/bin/splunk ${SPLUNK_BEFORE_START_CMD}"
+    fi
+    for n in {1..30}; do
+      if [[ -n $(eval echo \$\{SPLUNK_BEFORE_START_CMD_${n}\}) ]]; then
+        sudo -HEu ${SPLUNK_USER} sh -c "${SPLUNK_HOME}/bin/splunk $(eval echo \$\{SPLUNK_BEFORE_START_CMD_${n}\})"
+      else
+        # We do not want to iterate all, if one in the sequence is not set
+        break
+      fi
+    done
+  fi
+
   sudo -HEu ${SPLUNK_USER} ${SPLUNK_HOME}/bin/splunk start ${SPLUNK_START_ARGS}
   trap "sudo -HEu ${SPLUNK_USER} ${SPLUNK_HOME}/bin/splunk stop" SIGINT SIGTERM EXIT
 

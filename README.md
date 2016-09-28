@@ -19,9 +19,9 @@
 
 Current branch:
 
-* `6.4`, `6.4.3`, `latest` - Splunk Enterprise
-* `6.4-light`, `6.4.3-light`, `latest-light` - Splunk Light
-* `6.4-forwarder`, `6.4.3-forwarder`, `latest-forwarder` - Splunk Universal Forwarder
+* `6.5`, `6.5.0`, `latest` - Splunk Enterprise
+* `6.5-light`, `6.5.0-light`, `latest-light` - Splunk Light
+* `6.5-forwarder`, `6.5.0-forwarder`, `latest-forwarder` - Splunk Universal Forwarder
 
 For previous versions or newest releases see other branches.
 

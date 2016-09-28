@@ -3,8 +3,8 @@ FROM debian:jessie
 MAINTAINER Denis Gladkikh <docker-splunk@denis.gladkikh.email>
 
 ENV SPLUNK_PRODUCT splunk
-ENV SPLUNK_VERSION 6.4.3
-ENV SPLUNK_BUILD b03109c2bad4
+ENV SPLUNK_VERSION 6.5.0
+ENV SPLUNK_BUILD 59c8927def0f
 ENV SPLUNK_FILENAME splunk-${SPLUNK_VERSION}-${SPLUNK_BUILD}-Linux-x86_64.tgz
 
 ENV SPLUNK_HOME /opt/splunk

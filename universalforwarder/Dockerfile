@@ -1,7 +1,5 @@
 FROM debian:jessie
 
-MAINTAINER Denis Gladkikh <docker-splunk@denis.gladkikh.email>
-
 ENV SPLUNK_PRODUCT universalforwarder
 ENV SPLUNK_VERSION 6.5.0
 ENV SPLUNK_BUILD 59c8927def0f
@@ -11,6 +9,7 @@ ENV SPLUNK_HOME /opt/splunk
 ENV SPLUNK_GROUP splunk
 ENV SPLUNK_USER splunk
 ENV SPLUNK_BACKUP_DEFAULT_ETC /var/opt/splunk
+ARG DEBIAN_FRONTEND=noninteractive
 
 # add splunk:splunk user
 RUN groupadd -r ${SPLUNK_GROUP} \

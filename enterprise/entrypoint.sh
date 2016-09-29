@@ -22,12 +22,11 @@ elif [ "$1" = 'start-service' ]; then
   # Also override ownership of these files to splunk:splunk
   if ! $(cmp --silent /var/opt/splunk/etc/splunk.version ${SPLUNK_HOME}/etc/splunk.version); then
     cp -fR /var/opt/splunk/etc ${SPLUNK_HOME}
+    chown -R ${SPLUNK_USER}:${SPLUNK_GROUP} ${SPLUNK_HOME}/etc
+    chown -R ${SPLUNK_USER}:${SPLUNK_GROUP} ${SPLUNK_HOME}/var
   else
     __license_ok=true
   fi
-
-  chown -R ${SPLUNK_USER}:${SPLUNK_GROUP} ${SPLUNK_HOME}/etc
-  chown -R ${SPLUNK_USER}:${SPLUNK_GROUP} ${SPLUNK_HOME}/var
 
   if tty -s; then
     __license_ok=true
@@ -52,8 +51,8 @@ Splunk Enterprise
 
   Usage:
 
-    docker run -it outcoldman/splunk:latest
-    docker run --env SPLUNK_START_ARGS="--accept-license" outcoldman/splunk:latest
+    docker run -it splunk/enterprise:6.4.1
+    docker run --env SPLUNK_START_ARGS="--accept-license" splunk/enterprise:6.4.1
 
 EOF
     exit 1

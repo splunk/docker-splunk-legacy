@@ -19,12 +19,12 @@ If you have not used Docker before, see the [Getting started tutorial](https://d
 0. Enter the following command to pull the Splunk Enterprise version 6.5.0 image.<br>
    
    ```bash
-   docker pull splunk/enterprisetrial
+   docker pull splunk/splunk
    ```
 0. Run the Docker image.
    
    ```bash
-   docker run -d -e "SPLUNK_START_ARGS=--accept-license" -e "SPLUNK_USER=root" -p "8000:8000" splunk/enterprisetrial
+   docker run -d -e "SPLUNK_START_ARGS=--accept-license" -e "SPLUNK_USER=root" -p "8000:8000" splunk/splunk
    ```
 0. Access the Splunk instance with a browser by using the Docker machine IP address and Splunk Web port. For example, ``http://localhost:8000`
 
@@ -37,13 +37,13 @@ The following commands can be run from a shell prompt or Docker QuickStart Termi
 ### Pull an image for version 6.5.0 of Splunk Enterprise from this repository
 
 ```bash
-docker pull splunk/enterprisetrial:6.5.0
+docker pull splunk/splunk:6.5.0
 ```
 
 ### Pull an image that uses the latest version of Splunk Enterprise from this repository
 
 ```bash
-docker pull splunk/enterprisetrial:latest
+docker pull splunk/splunk:latest
 ```
 
 ### Start a Splunk Enterprise container and automatically accept the license agreement
@@ -57,7 +57,7 @@ docker run --name splunk --hostname splunk -p 8000:8000 -d -e "SPLUNK_START_ARGS
 
 ```bash
 docker run --name vsplunk -v /opt/splunk/etc -v /opt/splunk/var busybox
-docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license" splunk/enterprisetrial:6.5.0
+docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license" splunk/splunk:6.5.0
 ```
 
 ### Use entrypoint.sh to execute Splunk commands
@@ -87,7 +87,7 @@ You can also use entrypoint.sh to configure Splunk services with environment var
          - /opt/splunk/etc
          - /opt/splunk/var
         splunk:
-         image: splunk/enterprisetrial:6.5.0-monitor
+         image: splunk/splunk:6.5.0-monitor
          hostname: splunkenterprise
          environment:
           SPLUNK_START_ARGS: --accept-license --answer-yes
@@ -116,12 +116,12 @@ You can also use entrypoint.sh to configure Splunk services with environment var
 
 ### Image Variants
 
-The `splunk/enterprisetrial` image comes in several variants:
+The `splunk/splunk` image comes in several variants:
 
-`splunk/enterprisetrial:6.5.0`
+`splunk/splunk:6.5.0`
 This is the default Splunk Enterprise image.
 
-`splunk/enterprisetrial:6.5.0-monitor`
+`splunk/splunk:6.5.0-monitor`
 This image comes with some data inputs activated (e.g., file monitor of docker host JSON logs, HTTP Event Collector, Syslog, etc.). It also includes the Docker app which has dashboards to help you analyze collected logs and docker information such as stats, events, tops, and inspect from your running images.
 
 ### Data Store
@@ -198,14 +198,14 @@ Following is an example of how to configure Splunk Enterprise and the Splunk uni
     --name splunkdeploymentserver \
     --publish 8000 \
     --env SPLUNK_ENABLE_DEPLOY_SERVER=true \
-    splunk/enterprisetrial
+    splunk/splunk
 > echo "Starting Splunk Enterprise"
 > docker run -d --net splunk \
     --hostname splunkenterprise \
     --name splunkenterprise \
     --publish 8000 \
     --env SPLUNK_ENABLE_LISTEN=9997 \
-    splunk/enterprisetrial
+    splunk/splunk
 > echo "Starting forwarder, which forwards data to Splunk"
 > docker run -d --net splunk \
     --name forwarder \

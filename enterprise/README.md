@@ -51,7 +51,7 @@ docker pull splunk/splunk:latest
 This command starts a Splunk Enterprise instance from the Docker container in this repository, accepts the license agreement, and opens TCP port 8000 so that you can access the Splunk instance from your local machine.
 
 ```bash
-docker run --name splunk --hostname splunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license"
+docker run --name splunk --hostname splunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license" splunk/splunk:6.5.0
 ```
 ### Start a Splunk Enterprise container and mount the necessary container volumes
 

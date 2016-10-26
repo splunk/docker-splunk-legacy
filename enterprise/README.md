@@ -239,7 +239,22 @@ The following mount points require special permissions:
 
 Overriding the SPLUNK_USER envrionment variable to an authorized user (such as "root") gives you the required access to the mount points that the Docker app needs to analyze the collected Docker information.
 
-## Troubleshoot upgrade problems with docker-compose
+## Docker-compose errors
+
+If `docker-compose up` issues errors, first try running `docker-compose config` to check the contents of your `docker-compose.yml` file. Many issues can be solved by checking the indentation of your source, and referencing  the [Compose File Reference](https://docs.docker.com/compose/compose-file/). Some error examples are below:
+
+```
+$ docker-compose up
+ERROR: The Compose file './docker-compose.yml' is invalid because:
+Unsupported config option for services.vsplunk: 'splunk'
+
+$ docker-compose up
+ERROR: The Compose file './docker-compose.yml' is invalid because:
+Unsupported config option for services.splunk: 'SPLUNK_ENABLE_LISTEN'
+services.splunk.environment contains an invalid type, it should be an object, or an array
+```
+
+## Upgrade problems with docker-compose
 
 If you use `docker-compose` (or reference an existing volume with `docker run`) to configure and run your Docker image and the Splunk Enterprise Docker container detects an upgrade after you make a change to `docker-compose.yml`, complete the following procedure to make the image ignore the upgrade prompt:
 

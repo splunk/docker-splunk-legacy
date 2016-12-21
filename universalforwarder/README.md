@@ -241,7 +241,7 @@ The following mount points require special permissions:
 - `/var/lib/docker/containers`: By default, the Docker host only exposes read access to the root user. Read access to the volume could be changed for any users that start the Splunk process.
 - `/var/run/docker.sock` - Requires access to the [Docker Remote API](https://docs.docker.com/engine/reference/api/docker_remote_api/) to collect information such as docker stats, tops, events, and inspect.
 
-Overriding the SPLUNK_USER envrionment variable to an authorized user (such as "root") gives you the required access to the mount points that the Docker app needs to analyze the collected Docker information.
+Overriding the SPLUNK_USER environment variable to an authorized user (such as "root") gives you the required access to the mount points that the Docker app needs to analyze the collected Docker information.
 
 ## Troubleshoot upgrade problems with docker-compose
 

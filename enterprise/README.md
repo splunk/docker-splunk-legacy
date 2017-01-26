@@ -1,7 +1,7 @@
 # Supported tags
 
-* `6.5.0`- Splunk Enterprise base image [Dockerfile](https://github.com/splunk/docker-splunk/blob/master/enterprise/Dockerfile)
-* `6.5.0-monitor`, `latest` - Splunk Enterprise with Docker Monitoring [Dockerfile](https://github.com/splunk/docker-itmonitoring/blob/master/enterprise/Dockerfile)
+* `6.5.2`- Splunk Enterprise base image [Dockerfile](https://github.com/splunk/docker-splunk/blob/master/enterprise/Dockerfile)
+* `6.5.2-monitor`, `latest` - Splunk Enterprise with Docker Monitoring [Dockerfile](https://github.com/splunk/docker-itmonitoring/blob/master/enterprise/Dockerfile)
 
 # What is Splunk Enterprise?
 
@@ -16,7 +16,7 @@ If you have not used Docker before, see the [Getting started tutorial](https://d
 0. (Optional) Sign up for a Docker ID at [Docker Hub](https://hub.docker.com).
 0. Download and install Docker on your system.
 0. Open a shell prompt or Terminal window.
-0. Enter the following command to pull the Splunk Enterprise version 6.5.0 image.<br>
+0. Enter the following command to pull the Splunk Enterprise version 6.5.2 image.<br>
    
    ```bash
    docker pull splunk/splunk
@@ -34,10 +34,10 @@ See [How to use the Splunk Enterprise Docker image](#How-to-use-the-Splunk-Enter
 
 The following commands can be run from a shell prompt or Docker QuickStart Terminal (on Mac OS X).
 
-### Pull an image for version 6.5.0 of Splunk Enterprise from this repository
+### Pull an image for version 6.5.2 of Splunk Enterprise from this repository
 
 ```bash
-docker pull splunk/splunk:6.5.0
+docker pull splunk/splunk:6.5.2
 ```
 
 ### Pull an image that uses the latest version of Splunk Enterprise from this repository
@@ -51,13 +51,13 @@ docker pull splunk/splunk:latest
 This command starts a Splunk Enterprise instance from the Docker container in this repository, accepts the license agreement, and opens TCP port 8000 so that you can access the Splunk instance from your local machine.
 
 ```bash
-docker run --name splunk --hostname splunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license" splunk/splunk:6.5.0
+docker run --name splunk --hostname splunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license" splunk/splunk:6.5.2
 ```
 ### Start a Splunk Enterprise container and mount the necessary container volumes
 
 ```bash
 docker run --name vsplunk -v /opt/splunk/etc -v /opt/splunk/var busybox
-docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license" splunk/splunk:6.5.0
+docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license" splunk/splunk:6.5.2
 ```
 
 ### Use entrypoint.sh to execute Splunk commands
@@ -87,7 +87,7 @@ You can also use entrypoint.sh to configure Splunk services with environment var
          - /opt/splunk/etc
          - /opt/splunk/var
         splunk:
-         image: splunk/splunk:6.5.0-monitor
+         image: splunk/splunk:6.5.2-monitor
          hostname: splunkenterprise
          environment:
           SPLUNK_START_ARGS: --accept-license --answer-yes
@@ -118,10 +118,10 @@ You can also use entrypoint.sh to configure Splunk services with environment var
 
 The `splunk/splunk` image comes in several variants:
 
-`splunk/splunk:6.5.0`
+`splunk/splunk:6.5.2`
 This is the default Splunk Enterprise image.
 
-`splunk/splunk:6.5.0-monitor`
+`splunk/splunk:6.5.2-monitor`
 This image comes with some data inputs activated (e.g., file monitor of docker host JSON logs, HTTP Event Collector, Syslog, etc.). It also includes the Docker app which has dashboards to help you analyze collected logs and docker information such as stats, events, tops, and inspect from your running images.
 
 ### Data Store

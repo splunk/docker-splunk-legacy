@@ -1,7 +1,7 @@
 # Supported tags
 
-* `6.5.0`, `latest` - Splunk universal forwarder base image [Dockerfile](https://github.com/splunk/docker-splunk/blob/master/enterprise/Dockerfile)
-* `6.5.0-monitor` - Splunk universal forwarder with Docker Monitoring [Dockerfile](https://github.com/splunk/docker-itmonitoring/blob/master/Dockerfile)
+* `6.5.2`, `latest` - Splunk universal forwarder base image [Dockerfile](https://github.com/splunk/docker-splunk/blob/master/enterprise/Dockerfile)
+* `6.5.2-monitor` - Splunk universal forwarder with Docker Monitoring [Dockerfile](https://github.com/splunk/docker-itmonitoring/blob/master/Dockerfile)
 
 # What is the Splunk Universal Forwarder?
 
@@ -18,7 +18,7 @@ If you have not used Docker before, see the [Getting started tutorial](https://d
 0. (Optional) Sign up for a Docker ID at [Docker Hub](https://hub.docker.com).
 0. Download and install Docker on your system.
 0. Open a shell prompt or Terminal window.
-0. Enter the following command to pull the Splunk Enterprise version 6.5.0 image.<br>
+0. Enter the following command to pull the Splunk Enterprise version 6.5.2 image.<br>
    
    ```bash
    docker pull splunk/universalforwarder:latest
@@ -35,26 +35,26 @@ If you have not used Docker before, see the [Getting started tutorial](https://d
        --volume /var/run/docker.sock:/var/run/docker.sock:ro \
        --volume volume_splunkuf_etc:/opt/splunk/etc \
        --volume volume_splunkuf_var:/opt/splunk/var \
-       -d splunk/universalforwarder:6.5.0-monitor
+       -d splunk/universalforwarder:6.5.2-monitor
    ```
 
 See [How to use the universal forwarder Docker image](#how-to-use-the-universal-forwarder-docker-image) for additional example commands.
 
 # How to use the universal forwarder Docker image
 
-The universal forwarder docker image can collect data from a host and send data to another host. If you pull the image with the '6.5.0-monitor` tag, the forwarder container includes the Docker data collection inputs.
+The universal forwarder docker image can collect data from a host and send data to another host. If you pull the image with the '6.5.2-monitor` tag, the forwarder container includes the Docker data collection inputs.
 
 The following commands are examples of how to pull and run the universal forwarder Docker image. They can be run from a shell prompt or Docker QuickStart Terminal (on Mac OS X).
 
 ### Pull an image from this repository for the universal fowarder with the Docker data collection inputs
-The `6.5.0-monitor` tag ensures that the universal forwarder has the data inputs you need to get stats from a Docker container.
+The `6.5.2-monitor` tag ensures that the universal forwarder has the data inputs you need to get stats from a Docker container.
 
 ```bash
-docker pull splunk/universalforwarder:6.5.0-monitor
+docker pull splunk/universalforwarder:6.5.2-monitor
 ```
 
 ### Pull the latest version of the image from this repository
-The `6.5.0` and `latest` versions only have the forwarder and do not have any of the data inputs.
+The `6.5.2` and `latest` versions only have the forwarder and do not have any of the data inputs.
 
 ```bash
 docker pull splunk/universalforwarder:latest
@@ -102,7 +102,7 @@ You can also use entrypoint.sh to configure Splunk services with environment var
        - /opt/splunk/var
 
     splunkuniversalforwarder:
-     image: splunk/splunkuniversalforwarder:6.5.0-monitor
+     image: splunk/splunkuniversalforwarder:6.5.2-monitor
      hostname: splunkuniversalforwarder
      environment:
         SPLUNK_START_ARGS: --accept-license --answer-yes
@@ -127,10 +127,10 @@ You can also use entrypoint.sh to configure Splunk services with environment var
 
 The `splunk/universalforwarder` image comes in the following variants:
 
-`splunk/universalforwarder:6.5.0` and `splunk/universalforwarder:latest`
+`splunk/universalforwarder:6.5.2` and `splunk/universalforwarder:latest`
 This is the default universal forwarder image.
 
-`splunk/universalforwarder:6.5.0-monitor`
+`splunk/universalforwarder:6.5.2-monitor`
 This image comes with some data inputs activated.
 
 ### Data Store

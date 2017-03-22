@@ -60,6 +60,18 @@ docker run --name vsplunk -v /opt/splunk/etc -v /opt/splunk/var busybox
 docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license" splunk/splunk:6.5.2
 ```
 
+> Note:
+>
+> When using data volumes containers, docker will provision the image required volumes automatically under /var/lib/docker/volumes/...
+>
+> Please, refer to the link for further information: [link to Docker documentation](https://docs.docker.com/engine/tutorials/dockervolumes/#locating-a-volume)
+
+### Start a Splunk Enterprise container and mount volumes from host
+
+```bash
+docker run --name splunk --hostname splunk -p 8000:8000  -e "SPLUNK_START_ARGS=--accept-license" -v /opt/splunk/etc:/opt/splunk/etc -v /opt/splunk/var:/opt/splunk/var  splunk/splunk:6.5.2
+```
+
 ### Use entrypoint.sh to execute Splunk commands
 
 You can execute commands in the container by typing in the following command, for example:

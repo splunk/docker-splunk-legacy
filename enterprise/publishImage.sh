@@ -1,1 +1,1 @@
-docker push splunk/splunk:6.5.2
+docker push splunk/splunk:6.5.3

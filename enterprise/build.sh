@@ -4,4 +4,4 @@ if [ -z $CURRENT ]; then
 fi
 
 docker build --no-cache=true -t splunk/splunk:6.5.3 $CURRENT
-#docker build -t splunk/splunk:latest $CURRENT
+docker build -t splunk/splunk:latest $CURRENT

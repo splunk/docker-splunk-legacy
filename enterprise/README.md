@@ -1,7 +1,7 @@
 # Supported tags
 
-* `6.6.0`- Splunk Enterprise base image [Dockerfile](https://github.com/splunk/docker-splunk/blob/master/enterprise/Dockerfile)
-* `6.6.0-monitor`, `latest` - Splunk Enterprise with Docker Monitoring [Dockerfile](https://github.com/splunk/docker-itmonitoring/blob/master/enterprise/Dockerfile)
+* `6.6.0`,`latest`- Splunk Enterprise base image [Dockerfile](https://github.com/splunk/docker-splunk/blob/master/enterprise/Dockerfile)
+* `6.5.3-monitor` - Splunk Enterprise with Docker Monitoring [Dockerfile](https://github.com/splunk/docker-itmonitoring/blob/master/enterprise/Dockerfile)
 
 # What is Splunk Enterprise?
 

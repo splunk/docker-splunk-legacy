@@ -4,6 +4,9 @@ if [ -z $CURRENT ]; then
 fi
 
 
-docker build -t splunk/universalforwarder:6.6.0 $CURRENT
-docker build -t splunk/universalforwarder:latest $CURRENT
+docker build --no-cache=true -t splunk/universalforwarder:6.6.1 $CURRENT
+docker tag splunk/universalforwarder:6.6.1 splunk/universalforwarder:latest
+docker tag splunk/universalforwarder:6.6.1 registry.splunk.com/splunk/universalforwarder:6.6.1
+docker tag splunk/universalforwarder:6.6.1 registry.splunk.com/splunk/universalforwarder:latest
+
 

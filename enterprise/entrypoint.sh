@@ -51,8 +51,8 @@ Splunk Enterprise
 
   Usage:
 
-    docker run -it splunk/enterprise:6.6.0
-    docker run --env SPLUNK_START_ARGS="--accept-license" splunk/enterprise:6.6.0
+    docker run -it splunk/enterprise:6.6.1
+    docker run --env SPLUNK_START_ARGS="--accept-license" splunk/enterprise:6.6.1
 
 EOF
     exit 1

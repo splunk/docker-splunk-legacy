@@ -2,4 +2,4 @@
 docker push splunk/universalforwarder:6.6.1
 docker push splunk/universalforwarder:latest
 docker push registry.splunk.com/splunk/universalforwarder:latest
-docker push registry.splunk.com/splunk/universalforwarder:latest
+docker push registry.splunk.com/splunk/universalforwarder:6.6.1

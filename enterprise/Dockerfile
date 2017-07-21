@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:stretch-slim
 
 ENV SPLUNK_PRODUCT splunk
 ENV SPLUNK_VERSION 6.6.2

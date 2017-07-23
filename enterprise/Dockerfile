@@ -1,4 +1,4 @@
-FROM debian:stretch-slim
+FROM debian:jessie
 
 ENV SPLUNK_PRODUCT splunk
 ENV SPLUNK_VERSION 6.6.2
@@ -16,16 +16,16 @@ RUN groupadd -r ${SPLUNK_GROUP} \
     && useradd -r -m -g ${SPLUNK_GROUP} ${SPLUNK_USER}
 
 # make the "en_US.UTF-8" locale so splunk will be utf-8 enabled by default
-RUN apt-get update && apt-get install -y locales \
-    && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+RUN apt-get update  && apt-get install -y --no-install-recommends apt-utils && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
+	&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 ENV LANG en_US.utf8
 
 # pdfgen dependency
-RUN apt-get install -y libgssapi-krb5-2
+RUN apt-get update && apt-get install -y libgssapi-krb5-2 && rm -rf /var/lib/apt/lists/*
 
 # Download official Splunk release, verify checksum and unzip in /opt/splunk
 # Also backup etc folder, so it will be later copied to the linked volume
-RUN apt-get install -y wget sudo \
+RUN apt-get update && apt-get install -y wget sudo \
     && mkdir -p ${SPLUNK_HOME} \
     && wget -qO /tmp/${SPLUNK_FILENAME} https://download.splunk.com/products/${SPLUNK_PRODUCT}/releases/${SPLUNK_VERSION}/linux/${SPLUNK_FILENAME} \
     && wget -qO /tmp/${SPLUNK_FILENAME}.md5 https://download.splunk.com/products/${SPLUNK_PRODUCT}/releases/${SPLUNK_VERSION}/linux/${SPLUNK_FILENAME}.md5 \

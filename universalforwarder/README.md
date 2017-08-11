@@ -111,7 +111,7 @@ You can also use entrypoint.sh to configure Splunk services with environment var
        - /opt/splunk/var
 
     splunkuniversalforwarder:
-     image: splunk/splunkuniversalforwarder:6.5.3-monitor
+     image: splunk/universalforwarder:6.5.3-monitor
      hostname: splunkuniversalforwarder
      environment:
         SPLUNK_START_ARGS: --accept-license --answer-yes

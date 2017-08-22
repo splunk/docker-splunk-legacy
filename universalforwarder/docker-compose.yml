@@ -14,11 +14,6 @@ volumes:
   opt-splunk-var:
 
 services:
-  vsplunk_uf:
-    image: busybox
-    volumes:
-      - /opt/splunk/etc
-      - /opt/splunk/var
   splunkuniversalforwarder:
 #    build: .
     hostname: splunkuniversalforwarder

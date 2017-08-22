@@ -91,32 +91,30 @@ You can also use entrypoint.sh to configure Splunk services with environment var
 2. Open `docker-compose.yml` for editing.
 3. Insert the following block of text into the file.
   
-   ```
-   version: '3'
-   services:
-    vsplunk:
-        image: busybox
-        volumes:
-         - /opt/splunk/etc
-         - /opt/splunk/var
-        splunk:
-         image: splunk/splunk:6.5.3-monitor
-         hostname: splunkenterprise
-         environment:
-          SPLUNK_START_ARGS: --accept-license --answer-yes
-          SPLUNK_ENABLE_LISTEN: 9997
-          SPLUNK_ADD: tcp 1514
-          SPLUNK_USER: root
-         volumes_from:
-          - vsplunk
-         volumes:
-          - /var/lib/docker/containers:/host/containers:ro
-          - /var/run/docker.sock:/var/run/docker.sock:ro
-         ports:
-          - "8000:8000"
-          - "9997:9997"
-          - "8088:8088"
-          - "1514:1514"
+```
+version: '3'
+
+volumes:
+  opt-splunk-etc:
+  opt-splunk-var:
+
+services:
+  splunkenterprise:
+
+    hostname: splunkenterprise
+    image: splunk/splunk:6.6.3
+    environment:
+      SPLUNK_START_ARGS: --accept-license
+      SPLUNK_ENABLE_LISTEN: 9997
+      SPLUNK_ADD: tcp 1514
+    volumes:
+      - opt-splunk-etc:/opt/splunk/etc
+      - opt-splunk-var:/opt/splunk/var
+    ports:
+      - "8000:8000"
+      - "9997:9997"
+      - "8088:8088"
+      - "1514:1514"
    ```
 4. Save the file and close it.
 5. Run the `docker-compose` utility in the same directory.

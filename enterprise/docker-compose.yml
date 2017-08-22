@@ -5,14 +5,14 @@
 # 2. Add the following environment variable: SPLUNK_START_ARGS=--accept-license
 # e.g., docker run -e "SPLUNK_START_ARGS=--accept-license" splunk/enterprisetrial 
 
-# Support for Docker Compose v2, https://docs.docker.com/compose/overview/
-version: '2'
+# Support for Docker Compose v3, https://docs.docker.com/compose/overview/
+version: '3'
+
+volumes:
+  opt-splunk-etc:
+  opt-splunk-var:
+
 services:
-  vsplunk:
-    image: busybox
-    volumes:
-      - /opt/splunk/etc
-      - /opt/splunk/var
   splunkenterprise:
     #build: .
     hostname: splunkenterprise
@@ -21,8 +21,9 @@ services:
       SPLUNK_START_ARGS: --accept-license
       SPLUNK_ENABLE_LISTEN: 9997
       SPLUNK_ADD: tcp 1514
-    volumes_from:
-      - vsplunk
+    volumes:
+      - opt-splunk-etc:/opt/splunk/etc
+      - opt-splunk-var:/opt/splunk/var
     ports:
       - "8000:8000"
       - "9997:9997"

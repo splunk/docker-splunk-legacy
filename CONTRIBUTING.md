@@ -14,7 +14,7 @@ If you experience problems or see unexpected behavior with this project, create 
 
 0. Version of this project you're using (ex: 1.5.0)
 0. Platform version (ex: Windows Server 2012 R2)
-0. Splunk version (ex: 7.0.1)
+0. Splunk version (ex: 7.0.2)
 0. Other relevant information (ex: local/remote environment, Splunk network configuration)
 
 Alternatively, if you have a Splunk question please ask on [Splunk Answers][answers].

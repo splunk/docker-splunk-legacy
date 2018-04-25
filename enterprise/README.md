@@ -1,6 +1,6 @@
 # Supported tags
 
-* `7.0.2`,`latest`- Splunk Enterprise base image [Dockerfile](https://github.com/splunk/docker-splunk/blob/master/enterprise/Dockerfile)
+* `7.1.0`,`latest`- Splunk Enterprise base image [Dockerfile](https://github.com/splunk/docker-splunk/blob/master/enterprise/Dockerfile)
 * `6.5.3-monitor` - Splunk Enterprise with Docker Monitoring [Dockerfile](https://github.com/splunk/docker-itmonitoring/blob/master/enterprise/Dockerfile)
 
 # What is Splunk Enterprise?
@@ -16,7 +16,7 @@ If you have not used Docker before, see the [Getting started tutorial](https://d
 0. (Optional) Sign up for a Docker ID at [Docker Hub](https://hub.docker.com).
 0. Download and install Docker on your system.
 0. Open a shell prompt or Terminal window.
-0. Enter the following command to pull the Splunk Enterprise version 7.0.2 image.<br>
+0. Enter the following command to pull the Splunk Enterprise version 7.1.0 image.<br>
    
    ```bash
    docker pull splunk/splunk
@@ -24,8 +24,9 @@ If you have not used Docker before, see the [Getting started tutorial](https://d
 0. Run the Docker image.
    
    ```bash
-   docker run -d -e "SPLUNK_START_ARGS=--accept-license" -e "SPLUNK_USER=root" -p "8000:8000" splunk/splunk
+   docker run -d -e "SPLUNK_START_ARGS=--accept-license --gen-and-print-passwd" -e "SPLUNK_USER=root" -p "8000:8000" splunk/splunk
    ```
+0. Find randomly generated admin password in docker logs for this container.
 0. Access the Splunk instance with a browser by using the Docker machine IP address and Splunk Web port. For example, ``http://localhost:8000`
 
 See [How to use the Splunk Enterprise Docker image](#How-to-use-the-Splunk-Enterprise-Docker-image) for additional example commands.
@@ -35,10 +36,10 @@ See [How to use the Splunk Enterprise Docker image](#How-to-use-the-Splunk-Enter
 The following commands can be run from a shell prompt or Docker QuickStart Terminal (on Mac OS X).
 
 
-### Pull an image for version 7.0.2 of Splunk Enterprise from this repository
+### Pull an image for version 7.1.0 of Splunk Enterprise from this repository
 
 ```bash
-docker pull splunk/splunk:7.0.2
+docker pull splunk/splunk:7.1.0
 ```
 
 ### Pull an image that uses the latest version of Splunk Enterprise from this repository
@@ -52,13 +53,13 @@ docker pull splunk/splunk:latest
 This command starts a Splunk Enterprise instance from the Docker container in this repository, accepts the license agreement, and opens TCP port 8000 so that you can access the Splunk instance from your local machine.
 
 ```bash
-docker run --name splunk --hostname splunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license" splunk/splunk:7.0.2
+docker run --name splunk --hostname splunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license --gen-and-print-passwd" splunk/splunk:7.1.0
 ```
 ### Start a Splunk Enterprise container and mount the necessary container volumes
 
 ```bash
 docker run --name vsplunk -v /opt/splunk/etc -v /opt/splunk/var busybox
-docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license" splunk/splunk:7.0.2
+docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license --gen-and-print-passwd" splunk/splunk:7.1.0
 ```
 
 > Note:
@@ -70,7 +71,7 @@ docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -
 ### Start a Splunk Enterprise container and mount volumes from host
 
 ```bash
-docker run --name splunk --hostname splunk -p 8000:8000  -e "SPLUNK_START_ARGS=--accept-license" -v /opt/splunk/etc:/opt/splunk/etc -v /opt/splunk/var:/opt/splunk/var  splunk/splunk:7.0.2
+docker run --name splunk --hostname splunk -p 8000:8000  -e "SPLUNK_START_ARGS=--accept-license --gen-and-print-passwd" -v /opt/splunk/etc:/opt/splunk/etc -v /opt/splunk/var:/opt/splunk/var  splunk/splunk:7.1.0
 ```
 
 ### Use entrypoint.sh to execute Splunk commands
@@ -102,9 +103,9 @@ services:
   splunkenterprise:
 
     hostname: splunkenterprise
-    image: splunk/splunk:7.0.2
+    image: splunk/splunk:7.1.0
     environment:
-      SPLUNK_START_ARGS: --accept-license
+      SPLUNK_START_ARGS: --accept-license --gen-and-print-passwd
       SPLUNK_ENABLE_LISTEN: 9997
       SPLUNK_ADD: tcp 1514
     volumes:
@@ -129,7 +130,7 @@ services:
 
 The `splunk/splunk` image comes in several variants:
 
-`splunk/splunk:7.0.2`
+`splunk/splunk:7.1.0`
 This is the default Splunk Enterprise image.
 
 `splunk/splunk:6.5.3-monitor`

@@ -24,8 +24,9 @@ If you have not used Docker before, see the [Getting started tutorial](https://d
 0. Run the Docker image.
    
    ```bash
-   docker run -d -e "SPLUNK_START_ARGS=--accept-license" -e "SPLUNK_USER=root" -p "8000:8000" splunk/splunk
+   docker run -d -e "SPLUNK_START_ARGS=--accept-license --gen-and-print-passwd" -e "SPLUNK_USER=root" -p "8000:8000" splunk/splunk
    ```
+0. Find randomly generated admin password in docker logs for this container.
 0. Access the Splunk instance with a browser by using the Docker machine IP address and Splunk Web port. For example, ``http://localhost:8000`
 
 See [How to use the Splunk Enterprise Docker image](#How-to-use-the-Splunk-Enterprise-Docker-image) for additional example commands.
@@ -52,13 +53,13 @@ docker pull splunk/splunk:latest
 This command starts a Splunk Enterprise instance from the Docker container in this repository, accepts the license agreement, and opens TCP port 8000 so that you can access the Splunk instance from your local machine.
 
 ```bash
-docker run --name splunk --hostname splunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license" splunk/splunk:7.1.0
+docker run --name splunk --hostname splunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license --gen-and-print-passwd" splunk/splunk:7.1.0
 ```
 ### Start a Splunk Enterprise container and mount the necessary container volumes
 
 ```bash
 docker run --name vsplunk -v /opt/splunk/etc -v /opt/splunk/var busybox
-docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license" splunk/splunk:7.1.0
+docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license --gen-and-print-passwd" splunk/splunk:7.1.0
 ```
 
 > Note:
@@ -70,7 +71,7 @@ docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -
 ### Start a Splunk Enterprise container and mount volumes from host
 
 ```bash
-docker run --name splunk --hostname splunk -p 8000:8000  -e "SPLUNK_START_ARGS=--accept-license" -v /opt/splunk/etc:/opt/splunk/etc -v /opt/splunk/var:/opt/splunk/var  splunk/splunk:7.1.0
+docker run --name splunk --hostname splunk -p 8000:8000  -e "SPLUNK_START_ARGS=--accept-license --gen-and-print-passwd" -v /opt/splunk/etc:/opt/splunk/etc -v /opt/splunk/var:/opt/splunk/var  splunk/splunk:7.1.0
 ```
 
 ### Use entrypoint.sh to execute Splunk commands
@@ -104,7 +105,7 @@ services:
     hostname: splunkenterprise
     image: splunk/splunk:7.1.0
     environment:
-      SPLUNK_START_ARGS: --accept-license
+      SPLUNK_START_ARGS: --accept-license --gen-and-print-passwd
       SPLUNK_ENABLE_LISTEN: 9997
       SPLUNK_ADD: tcp 1514
     volumes:

@@ -1,6 +1,6 @@
 # Supported tags
 
-* `6.6.1`, `latest` - Splunk universal forwarder base image [Dockerfile](https://github.com/splunk/docker-splunk/blob/master/enterprise/Dockerfile)
+* `7.1.0`, `latest` - Splunk universal forwarder base image [Dockerfile](https://github.com/splunk/docker-splunk/blob/master/enterprise/Dockerfile)
 * `6.5.3-monitor` - Splunk universal forwarder with Docker Monitoring [Dockerfile](https://github.com/splunk/docker-itmonitoring/blob/master/universalforwarder/Dockerfile)
 
 # What is the Splunk Universal Forwarder?
@@ -18,7 +18,7 @@ If you have not used Docker before, see the [Getting started tutorial](https://d
 0. (Optional) Sign up for a Docker ID at [Docker Hub](https://hub.docker.com).
 0. Download and install Docker on your system.
 0. Open a shell prompt or Terminal window.
-0. Enter the following command to pull the Splunk Enterprise version 6.6.1 image.<br>
+0. Enter the following command to pull the Splunk Enterprise version 7.1.0 image.<br>
 
    
    ```bash
@@ -49,14 +49,14 @@ The universal forwarder docker image can collect data from a host and send data 
 The following commands are examples of how to pull and run the universal forwarder Docker image. They can be run from a shell prompt or Docker QuickStart Terminal (on Mac OS X).
 
 ### Pull an image from this repository for the universal fowarder with the Docker data collection inputs
-The `6.6.1-monitor` tag ensures that the universal forwarder has the data inputs you need to get stats from a Docker container.
+The `7.1.0-monitor` tag ensures that the universal forwarder has the data inputs you need to get stats from a Docker container.
 
 ```bash
-docker pull splunk/universalforwarder:6.6.1-monitor
+docker pull splunk/universalforwarder:7.1.0-monitor
 ```
 
 ### Pull the latest version of the image from this repository
-The `6.6.1` and `latest` versions only have the forwarder and do not have any of the data inputs.
+The `7.1.0` and `latest` versions only have the forwarder and do not have any of the data inputs.
 =======
 The `6.5.3-monitor` tag ensures that the universal forwarder has the data inputs you need to get stats from a Docker container.
 
@@ -101,28 +101,27 @@ You can also use entrypoint.sh to configure Splunk services with environment var
 0. Open `docker-compose.yml` for editing.
 0. Insert the following block of text into the file.
 
-   ```
-   version: '2'
-   services:
-    vsplunk_uf:
-     image: busybox
-     volumes:
-       - /opt/splunk/etc
-       - /opt/splunk/var
+```
+version: '3'
 
-    splunkuniversalforwarder:
-     image: splunk/splunkuniversalforwarder:6.5.3-monitor
-     hostname: splunkuniversalforwarder
-     environment:
-        SPLUNK_START_ARGS: --accept-license --answer-yes
-        SPLUNK_FORWARD_SERVER: splunkenterprise:9997
-        SPLUNK_USER: root
-     restart: always
-     volumes_from:
-       - vsplunk_uf
-     volumes:
-       - /var/lib/docker/containers:/host/containers:ro
-       - /var/run/docker.sock:/var/run/docker.sock:ro
+volumes:
+  opt-splunk-etc:
+  opt-splunk-var:
+
+services:
+  splunkuniversalforwarder:
+
+    hostname: splunkuniversalforwarder
+    image: splunk/universalforwarder:7.1.0
+    environment: SPLUNK_START_ARGS: --accept-license
+    volumes:
+      - opt-splunk-etc:/opt/splunk/etc
+      - opt-splunk-var:/opt/splunk/var
+    ports:
+      - "8000:8000"
+      - "9997:9997"
+      - "8088:8088"
+      - "1514:1514"
    ```
 0. Save the file and close it.
 0. Run the `docker-compose` utility.
@@ -136,7 +135,7 @@ You can also use entrypoint.sh to configure Splunk services with environment var
 
 The `splunk/universalforwarder` image comes in the following variants:
 
-`splunk/universalforwarder:6.6.1` and `splunk/universalforwarder:latest`
+`splunk/universalforwarder:7.1.0` and `splunk/universalforwarder:latest`
 This is the default universal forwarder image.
 
 `splunk/universalforwarder:6.5.3-monitor`

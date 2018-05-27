@@ -1,6 +1,6 @@
 # Supported tags
 
-* `6.6.1`,`latest`- Splunk Enterprise base image [Dockerfile](https://github.com/splunk/docker-splunk/blob/master/enterprise/Dockerfile)
+* `7.1.1`,`latest`- Splunk Enterprise base image [Dockerfile](https://github.com/splunk/docker-splunk/blob/master/enterprise/Dockerfile)
 * `6.5.3-monitor` - Splunk Enterprise with Docker Monitoring [Dockerfile](https://github.com/splunk/docker-itmonitoring/blob/master/enterprise/Dockerfile)
 
 # What is Splunk Enterprise?
@@ -16,7 +16,7 @@ If you have not used Docker before, see the [Getting started tutorial](https://d
 0. (Optional) Sign up for a Docker ID at [Docker Hub](https://hub.docker.com).
 0. Download and install Docker on your system.
 0. Open a shell prompt or Terminal window.
-0. Enter the following command to pull the Splunk Enterprise version 6.6.1 image.<br>
+0. Enter the following command to pull the Splunk Enterprise version 7.1.1 image.<br>
    
    ```bash
    docker pull splunk/splunk
@@ -24,8 +24,9 @@ If you have not used Docker before, see the [Getting started tutorial](https://d
 0. Run the Docker image.
    
    ```bash
-   docker run -d -e "SPLUNK_START_ARGS=--accept-license" -e "SPLUNK_USER=root" -p "8000:8000" splunk/splunk
+   docker run -d -e "SPLUNK_START_ARGS=--accept-license --gen-and-print-passwd" -e "SPLUNK_USER=root" -p "8000:8000" splunk/splunk
    ```
+0. Find randomly generated admin password in docker logs for this container.
 0. Access the Splunk instance with a browser by using the Docker machine IP address and Splunk Web port. For example, ``http://localhost:8000`
 
 See [How to use the Splunk Enterprise Docker image](#How-to-use-the-Splunk-Enterprise-Docker-image) for additional example commands.
@@ -35,10 +36,10 @@ See [How to use the Splunk Enterprise Docker image](#How-to-use-the-Splunk-Enter
 The following commands can be run from a shell prompt or Docker QuickStart Terminal (on Mac OS X).
 
 
-### Pull an image for version 6.6.1 of Splunk Enterprise from this repository
+### Pull an image for version 7.1.1 of Splunk Enterprise from this repository
 
 ```bash
-docker pull splunk/splunk:6.6.1
+docker pull splunk/splunk:7.1.1
 ```
 
 ### Pull an image that uses the latest version of Splunk Enterprise from this repository
@@ -52,13 +53,13 @@ docker pull splunk/splunk:latest
 This command starts a Splunk Enterprise instance from the Docker container in this repository, accepts the license agreement, and opens TCP port 8000 so that you can access the Splunk instance from your local machine.
 
 ```bash
-docker run --name splunk --hostname splunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license" splunk/splunk:6.6.1
+docker run --name splunk --hostname splunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license --gen-and-print-passwd" splunk/splunk:7.1.1
 ```
 ### Start a Splunk Enterprise container and mount the necessary container volumes
 
 ```bash
 docker run --name vsplunk -v /opt/splunk/etc -v /opt/splunk/var busybox
-docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license" splunk/splunk:6.6.1
+docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license --gen-and-print-passwd" splunk/splunk:7.1.1
 ```
 
 > Note:
@@ -70,7 +71,7 @@ docker run --hostname splunk --name splunk --volumes-from=vsplunk -p 8000:8000 -
 ### Start a Splunk Enterprise container and mount volumes from host
 
 ```bash
-docker run --name splunk --hostname splunk -p 8000:8000  -e "SPLUNK_START_ARGS=--accept-license" -v /opt/splunk/etc:/opt/splunk/etc -v /opt/splunk/var:/opt/splunk/var  splunk/splunk:6.6.1
+docker run --name splunk --hostname splunk -p 8000:8000  -e "SPLUNK_START_ARGS=--accept-license --gen-and-print-passwd" -v /opt/splunk/etc:/opt/splunk/etc -v /opt/splunk/var:/opt/splunk/var  splunk/splunk:7.1.1
 ```
 
 ### Use entrypoint.sh to execute Splunk commands
@@ -91,32 +92,30 @@ You can also use entrypoint.sh to configure Splunk services with environment var
 2. Open `docker-compose.yml` for editing.
 3. Insert the following block of text into the file.
   
-   ```
-   version: '2'
-   services:
-    vsplunk:
-        image: busybox
-        volumes:
-         - /opt/splunk/etc
-         - /opt/splunk/var
-        splunk:
-         image: splunk/splunk:6.5.3-monitor
-         hostname: splunkenterprise
-         environment:
-          SPLUNK_START_ARGS: --accept-license --answer-yes
-          SPLUNK_ENABLE_LISTEN: 9997
-          SPLUNK_ADD: tcp 1514
-          SPLUNK_USER: root
-         volumes_from:
-          - vsplunk
-         volumes:
-          - /var/lib/docker/containers:/host/containers:ro
-          - /var/run/docker.sock:/var/run/docker.sock:ro
-         ports:
-          - "8000:8000"
-          - "9997:9997"
-          - "8088:8088"
-          - "1514:1514"
+```
+version: '3'
+
+volumes:
+  opt-splunk-etc:
+  opt-splunk-var:
+
+services:
+  splunkenterprise:
+
+    hostname: splunkenterprise
+    image: splunk/splunk:7.1.1
+    environment:
+      SPLUNK_START_ARGS: --accept-license --gen-and-print-passwd
+      SPLUNK_ENABLE_LISTEN: 9997
+      SPLUNK_ADD: tcp 1514
+    volumes:
+      - opt-splunk-etc:/opt/splunk/etc
+      - opt-splunk-var:/opt/splunk/var
+    ports:
+      - "8000:8000"
+      - "9997:9997"
+      - "8088:8088"
+      - "1514:1514"
    ```
 4. Save the file and close it.
 5. Run the `docker-compose` utility in the same directory.
@@ -131,7 +130,7 @@ You can also use entrypoint.sh to configure Splunk services with environment var
 
 The `splunk/splunk` image comes in several variants:
 
-`splunk/splunk:6.6.1`
+`splunk/splunk:7.1.1`
 This is the default Splunk Enterprise image.
 
 `splunk/splunk:6.5.3-monitor`

@@ -87,9 +87,21 @@ EOF
       __restart_required=true
     fi
 
+    #if [[ "$__restart_required" == "true" ]]; then
+    #  sudo -HEu ${SPLUNK_USER} sh -c "${SPLUNK_HOME}/bin/splunk restart"
+    #fi
+    
+    #For Using set command with splubnkforwarder to set values like datastore-dir, deploy-poll, default-index, minfreemb, servername, server-type, splunkd-port, web-port, kvstore-port
+    #http://docs.splunk.com/Documentation/Splunk/7.0.3/Admin/CLIadmincommands
+    if [[ -n ${SPLUNK_SET} ]]; then
+        sudo -HEu ${SPLUNK_USER} sh -c "${SPLUNK_HOME}/bin/splunk set ${SPLUNK_SET} -auth admin:changeme"
+        __restart_required=true
+    fi
+    
     if [[ "$__restart_required" == "true" ]]; then
       sudo -HEu ${SPLUNK_USER} sh -c "${SPLUNK_HOME}/bin/splunk restart"
     fi
+    
 
     # Setup forwarding server
     # http://docs.splunk.com/Documentation/Splunk/latest/Forwarding/Deployanixdfmanually

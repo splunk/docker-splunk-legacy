@@ -9,6 +9,8 @@ ENV SPLUNK_HOME /opt/splunk
 ENV SPLUNK_GROUP splunk
 ENV SPLUNK_USER splunk
 ENV SPLUNK_BACKUP_DEFAULT_ETC /var/opt/splunk
+ENV SPLUNK_CERT_PATH /opt/splunk/etc/auth/self_signed
+
 ARG DEBIAN_FRONTEND=noninteractive
 
 # add splunk:splunk user
@@ -38,12 +40,15 @@ RUN apt-get update && apt-get install -y wget sudo \
     && mkdir -p /var/opt/splunk \
     && cp -R ${SPLUNK_HOME}/etc ${SPLUNK_BACKUP_DEFAULT_ETC} \
     && rm -fR ${SPLUNK_HOME}/etc \
+    && mkdir -p ${SPLUNK_CERT_PATH} \
     && chown -R ${SPLUNK_USER}:${SPLUNK_GROUP} ${SPLUNK_HOME} \
     && chown -R ${SPLUNK_USER}:${SPLUNK_GROUP} ${SPLUNK_BACKUP_DEFAULT_ETC} \
     && rm -rf /var/lib/apt/lists/*
 
 COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod +x /sbin/entrypoint.sh
+COPY myCACertificate.pem /opt/splunk/etc/auth/self_signed/
+COPY myMainServerCertificate.pem /opt/splunk/etc/auth/self_signed/
 
 # Ports Splunk Daemon, Network Input, HTTP Event Collector
 EXPOSE 8089/tcp 1514 8088/tcp

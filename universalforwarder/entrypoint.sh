@@ -82,6 +82,9 @@ EOF
 
     # Setup deployment server
     # http://docs.splunk.com/Documentation/Splunk/latest/Updating/Configuredeploymentclients
+    if [[ -n ${SPLUNK_META} ]]; then
+      sudo -HEu ${SPLUNK_USER} echo ${SPLUNK_META} >> /opt/splunk/etc/system/local/inputs.conf 
+    fi
     if [[ -n ${SPLUNK_DEPLOYMENT_SERVER} ]]; then
       sudo -HEu ${SPLUNK_USER} sh -c "${SPLUNK_HOME}/bin/splunk set deploy-poll ${SPLUNK_DEPLOYMENT_SERVER} -auth admin:changeme"
       __restart_required=true

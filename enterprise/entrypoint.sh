@@ -47,12 +47,12 @@ Splunk Enterprise
         end user license agreement
       - If you have reviewed and accepted the license, start container
         with the environment variable:
-            SPLUNK_START_ARGS=--accept-license
+            SPLUNK_START_ARGS=--accept-license --seed-passwd <your password>
 
   Usage:
 
     docker run -it splunk/enterprise:7.1.2
-    docker run --env SPLUNK_START_ARGS="--accept-license" splunk/enterprise:7.1.2
+    docker run --env SPLUNK_START_ARGS="--accept-license --seed-passwd <your password>" splunk/enterprise:7.1.2
 
 EOF
     exit 1

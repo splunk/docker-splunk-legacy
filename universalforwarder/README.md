@@ -28,7 +28,7 @@ If you have not used Docker before, see the [Getting started tutorial](https://d
    
    ```bash
    docker run --name splunkuniversalforwarder \
-     --env SPLUNK_START_ARGS=--accept-license \
+     --env SPLUNK_START_ARGS="--accept-license --seed-passwd <your password>" \
        --env SPLUNK_FORWARD_SERVER=splunk_ip:9997 \
      --env SPLUNK_USER=root \
      --volume /var/lib/docker/containers:/host/containers:ro \
@@ -74,13 +74,13 @@ docker pull splunk/universalforwarder:latest
 This command starts a universal forwarder instance from the Docker container in this repository, accepts the license agreement, and opens TCP port 8000 so that you can access the Splunk instance from your local machine.
 
 ```bash
-docker run --name splunk --hostname splunk -d -e "SPLUNK_START_ARGS=--accept-license" splunk/universalforwarder
+docker run --name splunk --hostname splunk -d -e "SPLUNK_START_ARGS=--accept-license --seed-passwd <your password>" splunk/universalforwarder
 ```
 ### Start a universal forwarder container and mount the necessary container volumes
 
 ```bash
 docker run --name vsplunk -v /opt/splunk/etc -v /opt/splunk/var busybox
-docker run --hostname splunk --name splunk --volumes-from=vsplunk -d -e "SPLUNK_START_ARGS=--accept-license" splunk/universalforwarder
+docker run --hostname splunk --name splunk --volumes-from=vsplunk -d -e "SPLUNK_START_ARGS=--accept-license --seed-passwd <your password>" splunk/universalforwarder
 ```
 
 ### Use entrypoint.sh to execute Splunk commands
@@ -113,7 +113,7 @@ services:
 
     hostname: splunkuniversalforwarder
     image: splunk/universalforwarder:7.1.2
-    environment: SPLUNK_START_ARGS: --accept-license
+    environment: SPLUNK_START_ARGS: --accept-license --seed-passwd <your password>
     volumes:
       - opt-splunk-etc:/opt/splunk/etc
       - opt-splunk-var:/opt/splunk/var
@@ -259,7 +259,7 @@ If you use `docker-compose` (or reference an existing volume with `docker run`) 
 0. In the `Environment:` section for the universal forwarder image, add the following line:
    
    ```
-   SPLUNK_START_ARGS: --accept-license --answer-yes
+   SPLUNK_START_ARGS: --accept-license --seed-passwd <your password> --answer-yes
    ```
 0. Save `docker-compose.yml` and close it.
 0. Run `docker-compose up` again.

@@ -264,6 +264,19 @@ If you use `docker-compose` (or reference an existing volume with `docker run`) 
 0. Save `docker-compose.yml` and close it.
 0. Run `docker-compose up` again.
 
+If you want to configure self signed certificate at forwarder side, you need to follow following steps:-
+
+0. Copy client cert to the current directory
+0. Copy root CA certificate to the same directory.
+0. Then push the container to the local repository
+
+
+Now say if you are using Kubernetes to configure splunk forwarder in K8s cluster then you need to set the start arguments like below
+
+- name: SPLUNK_FORWARD_SERVER_ARGS
+  value: "-ssl-cert-path /opt/splunk/etc/auth/self_signed/myMainServerCertificate.pem -ssl-root-ca-path  /opt/splunk/etc/auth/self_signed/myCACertificate.pem -ssl-password ******"
+
+
 ## If you still need help
 
 If you still have trouble forwarding data with the Splunk universal forwarder Docker image, use one of the following options:
